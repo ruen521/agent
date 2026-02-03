@@ -1,0 +1,38 @@
+[
+  {
+    "VendorID": "V001",
+    "Name": "Holiday Supplies Inc.",
+    "PhoneNumber": "+1-206-555-0148",
+    "Email": "orders@holidaysupplies.example",
+    "LeadTimeDays": 12,
+    "MinimumOrder": 500,
+    "Rating": 4.6
+  },
+  {
+    "VendorID": "V002",
+    "Name": "Evergreen Wholesale",
+    "PhoneNumber": "+1-503-555-0184",
+    "Email": "sales@evergreenwholesale.example",
+    "LeadTimeDays": 8,
+    "MinimumOrder": 300,
+    "Rating": 4.3
+  },
+  {
+    "VendorID": "V003",
+    "Name": "Aurora Electronics",
+    "PhoneNumber": "+1-408-555-0172",
+    "Email": "supply@auroraelectronics.example",
+    "LeadTimeDays": 15,
+    "MinimumOrder": 800,
+    "Rating": 4.5
+  },
+  {
+    "VendorID": "V004",
+    "Name": "Northwind Distribution",
+    "PhoneNumber": "+1-312-555-0199",
+    "Email": "accounts@northwinddist.example",
+    "LeadTimeDays": 10,
+    "MinimumOrder": 400,
+    "Rating": 4.1
+  }
+]

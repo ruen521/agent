@@ -1,0 +1,310 @@
+[
+  {
+    "created_at": "2026-02-03T09:04:27.158155+00:00",
+    "total_cost": 48141.0,
+    "target_safety_days": 14,
+    "vendor_groups": [
+      {
+        "vendor_id": "V001",
+        "vendor_name": "Holiday Supplies Inc.",
+        "minimum_order": 500,
+        "lead_time_days": 12,
+        "items": [
+          {
+            "SKU": "HOL-CTREE-6FT",
+            "VendorID": "V001",
+            "recommended_qty": 198,
+            "unit_cost": 45.0,
+            "line_cost": 8910.0,
+            "eta_days": 12,
+            "expected_delivery_date": "2026-02-15"
+          },
+          {
+            "SKU": "HOL-CTREE-7FT",
+            "VendorID": "V001",
+            "recommended_qty": 160,
+            "unit_cost": 62.0,
+            "line_cost": 9920.0,
+            "eta_days": 12,
+            "expected_delivery_date": "2026-02-15"
+          },
+          {
+            "SKU": "HOL-ORN-RED-24",
+            "VendorID": "V001",
+            "recommended_qty": 252,
+            "unit_cost": 4.5,
+            "line_cost": 1134.0,
+            "eta_days": 12,
+            "expected_delivery_date": "2026-02-15"
+          }
+        ],
+        "total_cost": 19964.0,
+        "meets_minimum_order": true
+      },
+      {
+        "vendor_id": "V002",
+        "vendor_name": "Evergreen Wholesale",
+        "minimum_order": 300,
+        "lead_time_days": 8,
+        "items": [
+          {
+            "SKU": "HOL-WREATH-24",
+            "VendorID": "V002",
+            "recommended_qty": 96,
+            "unit_cost": 8.75,
+            "line_cost": 840.0,
+            "eta_days": 8,
+            "expected_delivery_date": "2026-02-11"
+          },
+          {
+            "SKU": "HOME-PILLOW-SET",
+            "VendorID": "V002",
+            "recommended_qty": 60,
+            "unit_cost": 9.8,
+            "line_cost": 588.0,
+            "eta_days": 8,
+            "expected_delivery_date": "2026-02-11"
+          },
+          {
+            "SKU": "HOME-BLANKET-FLEECE",
+            "VendorID": "V002",
+            "recommended_qty": 38,
+            "unit_cost": 14.5,
+            "line_cost": 551.0,
+            "eta_days": 8,
+            "expected_delivery_date": "2026-02-11"
+          },
+          {
+            "SKU": "HOME-CANDLE-VAN",
+            "VendorID": "V002",
+            "recommended_qty": 59,
+            "unit_cost": 5.2,
+            "line_cost": 306.8,
+            "eta_days": 8,
+            "expected_delivery_date": "2026-02-11"
+          },
+          {
+            "SKU": "HOME-STORAGE-BIN-L",
+            "VendorID": "V002",
+            "recommended_qty": 31,
+            "unit_cost": 11.0,
+            "line_cost": 341.0,
+            "eta_days": 8,
+            "expected_delivery_date": "2026-02-11"
+          },
+          {
+            "SKU": "OUT-CHAIR-FOLD",
+            "VendorID": "V002",
+            "recommended_qty": 50,
+            "unit_cost": 19.5,
+            "line_cost": 975.0,
+            "eta_days": 8,
+            "expected_delivery_date": "2026-02-11"
+          },
+          {
+            "SKU": "OUT-LANTERN-LED",
+            "VendorID": "V002",
+            "recommended_qty": 49,
+            "unit_cost": 13.8,
+            "line_cost": 676.2,
+            "eta_days": 8,
+            "expected_delivery_date": "2026-02-11"
+          },
+          {
+            "SKU": "OUT-GRILL-TOOLSET",
+            "VendorID": "V002",
+            "recommended_qty": 27,
+            "unit_cost": 16.0,
+            "line_cost": 432.0,
+            "eta_days": 8,
+            "expected_delivery_date": "2026-02-11"
+          },
+          {
+            "SKU": "KIT-PAN-NONSTICK-10",
+            "VendorID": "V002",
+            "recommended_qty": 46,
+            "unit_cost": 15.0,
+            "line_cost": 690.0,
+            "eta_days": 8,
+            "expected_delivery_date": "2026-02-11"
+          },
+          {
+            "SKU": "KIT-KNIFE-SET-6",
+            "VendorID": "V002",
+            "recommended_qty": 39,
+            "unit_cost": 22.0,
+            "line_cost": 858.0,
+            "eta_days": 8,
+            "expected_delivery_date": "2026-02-11"
+          },
+          {
+            "SKU": "KIT-MUG-SET-4",
+            "VendorID": "V002",
+            "recommended_qty": 64,
+            "unit_cost": 9.0,
+            "line_cost": 576.0,
+            "eta_days": 8,
+            "expected_delivery_date": "2026-02-11"
+          }
+        ],
+        "total_cost": 6834.0,
+        "meets_minimum_order": true
+      },
+      {
+        "vendor_id": "V003",
+        "vendor_name": "Aurora Electronics",
+        "minimum_order": 800,
+        "lead_time_days": 15,
+        "items": [
+          {
+            "SKU": "ELEC-SPKR-BT-MINI",
+            "VendorID": "V003",
+            "recommended_qty": 175,
+            "unit_cost": 18.0,
+            "line_cost": 3150.0,
+            "eta_days": 15,
+            "expected_delivery_date": "2026-02-18"
+          },
+          {
+            "SKU": "ELEC-HEADPHONES-ANC",
+            "VendorID": "V003",
+            "recommended_qty": 97,
+            "unit_cost": 58.0,
+            "line_cost": 5626.0,
+            "eta_days": 15,
+            "expected_delivery_date": "2026-02-18"
+          },
+          {
+            "SKU": "ELEC-USBHUB-7P",
+            "VendorID": "V003",
+            "recommended_qty": 142,
+            "unit_cost": 12.5,
+            "line_cost": 1775.0,
+            "eta_days": 15,
+            "expected_delivery_date": "2026-02-18"
+          },
+          {
+            "SKU": "ELEC-CAM-WEBCAM-HD",
+            "VendorID": "V003",
+            "recommended_qty": 86,
+            "unit_cost": 28.0,
+            "line_cost": 2408.0,
+            "eta_days": 15,
+            "expected_delivery_date": "2026-02-18"
+          },
+          {
+            "SKU": "OFF-MOUSE-WIRELESS",
+            "VendorID": "V003",
+            "recommended_qty": 89,
+            "unit_cost": 13.0,
+            "line_cost": 1157.0,
+            "eta_days": 15,
+            "expected_delivery_date": "2026-02-18"
+          }
+        ],
+        "total_cost": 14116.0,
+        "meets_minimum_order": true
+      },
+      {
+        "vendor_id": "V004",
+        "vendor_name": "Northwind Distribution",
+        "minimum_order": 400,
+        "lead_time_days": 10,
+        "items": [
+          {
+            "SKU": "TOY-BLOCKS-100",
+            "VendorID": "V004",
+            "recommended_qty": 85,
+            "unit_cost": 12.0,
+            "line_cost": 1020.0,
+            "eta_days": 10,
+            "expected_delivery_date": "2026-02-13"
+          },
+          {
+            "SKU": "TOY-DRONE-MINI",
+            "VendorID": "V004",
+            "recommended_qty": 39,
+            "unit_cost": 26.0,
+            "line_cost": 1014.0,
+            "eta_days": 10,
+            "expected_delivery_date": "2026-02-13"
+          },
+          {
+            "SKU": "TOY-PLUSH-BEAR",
+            "VendorID": "V004",
+            "recommended_qty": 68,
+            "unit_cost": 7.5,
+            "line_cost": 510.0,
+            "eta_days": 10,
+            "expected_delivery_date": "2026-02-13"
+          },
+          {
+            "SKU": "TOY-BOARD-CLASSIC",
+            "VendorID": "V004",
+            "recommended_qty": 53,
+            "unit_cost": 14.0,
+            "line_cost": 742.0,
+            "eta_days": 10,
+            "expected_delivery_date": "2026-02-13"
+          },
+          {
+            "SKU": "APP-TSHIRT-COT-M",
+            "VendorID": "V004",
+            "recommended_qty": 138,
+            "unit_cost": 6.0,
+            "line_cost": 828.0,
+            "eta_days": 10,
+            "expected_delivery_date": "2026-02-13"
+          },
+          {
+            "SKU": "APP-HOODIE-GREY-L",
+            "VendorID": "V004",
+            "recommended_qty": 62,
+            "unit_cost": 18.5,
+            "line_cost": 1147.0,
+            "eta_days": 10,
+            "expected_delivery_date": "2026-02-13"
+          },
+          {
+            "SKU": "APP-SOCKS-SPORT-3",
+            "VendorID": "V004",
+            "recommended_qty": 174,
+            "unit_cost": 3.2,
+            "line_cost": 556.8,
+            "eta_days": 10,
+            "expected_delivery_date": "2026-02-13"
+          },
+          {
+            "SKU": "BEAUTY-SERUM-VITC",
+            "VendorID": "V004",
+            "recommended_qty": 56,
+            "unit_cost": 10.5,
+            "line_cost": 588.0,
+            "eta_days": 10,
+            "expected_delivery_date": "2026-02-13"
+          },
+          {
+            "SKU": "BEAUTY-CREAM-HAND",
+            "VendorID": "V004",
+            "recommended_qty": 84,
+            "unit_cost": 4.8,
+            "line_cost": 403.2,
+            "eta_days": 10,
+            "expected_delivery_date": "2026-02-13"
+          },
+          {
+            "SKU": "OFF-NOTEBOOK-A5",
+            "VendorID": "V004",
+            "recommended_qty": 190,
+            "unit_cost": 2.2,
+            "line_cost": 418.0,
+            "eta_days": 10,
+            "expected_delivery_date": "2026-02-13"
+          }
+        ],
+        "total_cost": 7227.0,
+        "meets_minimum_order": true
+      }
+    ]
+  }
+]

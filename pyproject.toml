@@ -1,0 +1,14 @@
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+select = ["E", "F", "I", "B", "UP", "SIM"]
+
+[tool.ruff.isort]
+combine-as-imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
