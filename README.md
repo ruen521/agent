@@ -50,84 +50,110 @@ npm run dev
 访问：`http://localhost:5173`
 
 ## 智能体工作原理
-一次请求的处理流程如下：
-1. 前端调用 `/agents/invoke`，传入 `agent`、`input`、`session_id`。
-2. 后端进入 LangGraph 工作流，先加载会话历史。
-3. 根据 `agent` 路由到对应节点执行工具调用与结构化渲染。
-4. 将工具输出与系统提示词一起交给 LLM 生成自然语言回复。
-5. 写入会话历史，返回 `response_text` + `structured_output` 给前端。
 
-系统的关键目标是把“确定性计算”放在工具层，把“解释与行动建议”交给 LLM。
+### 请求处理流程
 
-## LangGraph 工作流设计
-核心节点：
-1. `load_session` 读取 `session_id` 的历史消息。
-2. `stockout_sentinel`、`replenishment_planner`、`exception_investigator`、`markdown_clearance_coach`、`inventory_copilot` 执行专属工具逻辑。
-3. `finalize` 将问答写回内存，形成多轮对话上下文。
+1. 前端发起请求，传入智能体类型、用户输入和会话 ID
+2. 系统加载会话历史，保持对话上下文
+3. 根据智能体类型路由到对应的处理节点
+4. 调用工具层完成数据计算和分析
+5. LLM 将计算结果转化为自然语言回复
+6. 返回自然语言回复和结构化数据
 
-AgentState 关键字段：
-1. `agent` 目标智能体 ID。
-2. `input` 用户问题。
-3. `session_id` 会话 ID。
-4. `messages` 对话历史。
-5. `tool_output` 工具原始结果。
-6. `response_text` LLM 输出。
-7. `structured_output` 结构化结果给前端渲染。
-8. `forced_tool` 与 `forced_args` 支持强制工具调用。
+### 核心设计理念
+
+**确定性计算与智能解释分离**
+
+- 工具层负责精确的数学计算、数据查询和规则判断
+- LLM 负责理解用户意图、解释数据含义和生成行动建议
+- 前端优先使用结构化数据渲染，确保展示稳定性
+
+---
 
 ## 工具层设计
-所有智能体通过工具函数完成数据计算，避免 LLM 幻觉。
 
-**inventory_query_tool**
-1. 查询类型：`all`、`low_stock`、`by_category`、`by_sku`、`stockout_risk`。
-2. 衍生字段：`days_until_stockout`、`urgency_level`、`shortage_amount`、`revenue_at_risk`、供应商联系方式。
-3. 紧急度阈值：CRITICAL `<3` 天，HIGH `3-5` 天，MEDIUM `5-7` 天。
+### 1. 库存查询工具（inventory_query_tool）
 
-**inventory_replenishment_tool**
-1. 公式：`(velocity * lead_time) + (velocity * safety_days) - current_stock`。
-2. 按供应商合并，校验最小起订金额，输出 ETA 与预计到货日期。
+**查询类型**：全部商品、低库存、按品类、按 SKU、断货风险
 
-**inventory_vendor_info_tool**
-1. 按 `VendorID` 查询供应商联系方式、交期、最低起订金额、评分。
+**计算字段**：
+- 预计断货天数（基于当前库存和销售速度）
+- 紧急程度（CRITICAL < 3天，HIGH 3-5天，MEDIUM 5-7天，LOW > 7天）
+- 缺货数量和风险金额
+- 供应商联系信息
 
-**inventory_markdown_calculator**
-1. 分级策略：`45/60/90/180+` 天分别对应 `10%/20%/30%/50%`。
-2. 输出 `days_to_clear`、`revenue_at_markdown`、`holding_cost_avoided`、`net_benefit`。
+### 2. 补货计算工具（inventory_replenishment_tool）
 
-**stats_calculator**
-1. 统计 SKU 总数、低库存、缺货风险、紧急风险与类目数量。
+**计算公式**：
+```
+补货数量 = (日销量 × 供应商交期) + (日销量 × 安全库存天数) - 当前库存
+```
 
-## 五大智能体设计
+**功能**：
+- 按供应商分组合并订单
+- 校验最低起订金额
+- 计算预计到货日期
+
+### 3. 供应商信息工具（inventory_vendor_info_tool）
+
+**提供数据**：供应商名称、联系方式、供货交期、最低起订金额、评分
+
+### 4. 清仓折扣计算工具（inventory_markdown_calculator）
+
+**折扣策略**：
+- 45-60 天：10% off
+- 60-90 天：20% off
+- 90-180 天：30% off
+- 180+ 天：50% off
+
+**输出**：预计清仓天数、促销收入、节省仓储成本、净收益
+
+### 5. 统计指标工具（stats_calculator）
+
+**统计维度**：SKU 总数、低库存数量、断货风险数量、紧急风险数量、品类数量
+
+---
+
+## 五大智能体
 
 ### 1. 缺货哨兵（Stockout Sentinel）
-目标：1-7 天缺货风险预警，优先级排序，给出行动建议。
-1. 工具：`inventory_query_tool(stockout_risk)`。
-2. 关键输出：SKU、缺货天数、缺口、风险收入、紧急度、供应商联系方式、行动建议。
 
+**功能**：监控 1-7 天内的断货风险，按紧急程度排序
 
-### 2. 补货规划（Replenishment Planner）
-目标：自动生成补货计划，按供应商合并订单，满足最低起订。
-1. 工具：`inventory_replenishment_tool(safety_days=14)`。
-2. 关键输出：供应商分组、单品数量、订单金额、最低起订提示、预计到货日期。
+**输出**：SKU、断货天数、缺货数量、风险金额、供应商信息、行动建议
 
-### 3. 异常侦测（Exception Investigator）
-目标：发现数据质量异常并给出修复建议。
-1. 规则：补货点与速度不匹配、价格异常、负毛利、库存与速度不匹配。
-2. 输出：异常类型、原因假设与修复动作。
+### 2. 补货规划师（Replenishment Planner）
+
+**功能**：生成补货计划，按供应商分组订单
+
+**输出**：供应商分组、商品清单、订单金额、最低起订校验、预计到货日期
+
+### 3. 异常侦探（Exception Investigator）
+
+**功能**：检测数据质量异常
+
+**检查规则**：
+- 补货点与销售速度不匹配
+- 售价低于成本价
+- 负毛利率
+- 库存与销售速度不匹配
+
+**输出**：异常类型、原因分析、修复建议
 
 ### 4. 清仓教练（Markdown & Clearance Coach）
-目标：对高库存低动销 SKU 给出折扣策略并估算收益。
-1. 工具：`inventory_markdown_calculator`。
-2. 输出：建议折扣、提速倍数、清仓天数、净收益与持有成本对比。
+
+**功能**：为滞销商品设计促销方案
+
+**输出**：建议折扣、销售提速预测、清仓时间、收益分析
 
 ### 5. 库存助手（Inventory Copilot）
-目标：多轮对话分析，全局库存问答。
-1. 工具选择：根据问题语义自动调用查询、补货、供应商或清仓工具。
-2. 输出：简洁结论 + 关键指标 + 后续建议。
 
-## 前端与结构化输出
-前端页面不直接依赖 LLM 自然语言，而以 `structured_output` 作为稳定展示来源：
-1. 风险表读取 `risks` 列表。
-2. 明细表读取 `inventory_query` 的 enrich 字段。
-3. 统计卡片读取 `/agents/stats` 统计数据。
+**功能**：多轮对话式库存分析
+
+**特点**：
+- 自动选择合适的工具
+- 支持上下文追问
+- 提供综合性建议
+
+---
 
