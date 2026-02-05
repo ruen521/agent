@@ -388,6 +388,56 @@ button.ghost:hover {
   line-height: 1.5;
 }
 
+.chat-bubble .markdown-content {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.chat-bubble .markdown-content p {
+  margin: 0 0 8px;
+}
+
+.chat-bubble .markdown-content p:last-child {
+  margin-bottom: 0;
+}
+
+.chat-bubble .markdown-content pre {
+  padding: 10px 12px;
+  background: #0f172a;
+  color: #f8fafc;
+  border-radius: 10px;
+  overflow-x: auto;
+  font-size: 0.85rem;
+}
+
+.chat-bubble .markdown-content code {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.85em;
+}
+
+.chat-bubble .markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  margin: 8px 0;
+}
+
+.chat-bubble .markdown-content th,
+.chat-bubble .markdown-content td {
+  border: 1px solid #e5e7eb;
+  padding: 6px 8px;
+  text-align: left;
+}
+
+.chat-bubble .markdown-content thead {
+  background: #f3f4f6;
+}
+
+.chat-bubble .markdown-content ul,
+.chat-bubble .markdown-content ol {
+  margin: 0 0 8px 18px;
+}
+
 .chat-bubble.user {
   align-self: flex-end;
   background: linear-gradient(135deg, rgba(78, 205, 196, 0.2), rgba(69, 183, 209, 0.2));

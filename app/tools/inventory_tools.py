@@ -222,21 +222,30 @@ def inventory_markdown_calculator(
         velocity = float(item.get("DailySalesVelocity", 0) or 0)
         days_supply = float("inf") if velocity == 0 else round(item["CurrentStock"] / velocity, 2)
 
-        if days_supply >= 180:
-            markdown = 0.5
-            multiplier = 3.0
-        elif days_supply >= 90:
-            markdown = 0.3
-            multiplier = 2.5
-        elif days_supply >= 60:
-            markdown = 0.2
-            multiplier = 2.0
-        elif days_supply >= 45:
-            markdown = 0.1
-            multiplier = 1.5
-        else:
+        if velocity > 0 and days_supply <= 7:
+            status = "STOCKOUT_RISK"
             markdown = 0.0
             multiplier = 1.0
+        elif days_supply < 45:
+            status = "MONITOR" if velocity <= 3 else "HEALTHY"
+            markdown = 0.0
+            multiplier = 1.0
+        elif days_supply < 60:
+            status = "PROMOTIONAL"
+            markdown = 0.1
+            multiplier = 2.0
+        elif days_supply < 90:
+            status = "LIGHT_CLEARANCE"
+            markdown = 0.2
+            multiplier = 2.5
+        elif days_supply < 180:
+            status = "STANDARD_CLEARANCE"
+            markdown = 0.3
+            multiplier = 3.0
+        else:
+            status = "AGGRESSIVE_CLEARANCE"
+            markdown = 0.5
+            multiplier = 3.0
 
         expected_velocity = velocity * multiplier
         days_to_clear = float("inf") if expected_velocity == 0 else round(
@@ -258,6 +267,7 @@ def inventory_markdown_calculator(
             {
                 "SKU": item["SKU"],
                 "days_of_supply": days_supply,
+                "status": status,
                 "recommended_markdown": markdown,
                 "expected_velocity_multiplier": multiplier,
                 "days_to_clear": days_to_clear,

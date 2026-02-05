@@ -4,6 +4,8 @@ import logging
 from typing import Any
 from statistics import median
 
+import numpy as np
+
 try:  # pragma: no cover - depends on optional dependency
     from langgraph.graph import END, StateGraph
     _LANGGRAPH_AVAILABLE = True
@@ -86,11 +88,42 @@ def _render_exceptions(items: list[dict[str, Any]]) -> tuple[str, dict[str, Any]
     anomalies: list[dict[str, Any]] = []
     # 价格中位数按类别
     by_cat: dict[str, list[float]] = {}
+    by_cat_price: dict[str, list[float]] = {}
+    by_cat_velocity: dict[str, list[float]] = {}
     for item in items:
-        by_cat.setdefault(item.get("Category", "UNKNOWN"), []).append(
-            float(item.get("SellingPrice", item.get("UnitCost", 0)))
-        )
+        cat = item.get("Category", "UNKNOWN")
+        price = float(item.get("SellingPrice", item.get("UnitCost", 0)) or 0)
+        velocity = float(item.get("DailySalesVelocity", 0) or 0)
+        by_cat.setdefault(cat, []).append(price)
+        by_cat_price.setdefault(cat, []).append(price)
+        by_cat_velocity.setdefault(cat, []).append(velocity)
     cat_medians = {c: median(v) for c, v in by_cat.items() if v}
+    cat_stats: dict[str, dict[str, float]] = {}
+    for cat, prices in by_cat_price.items():
+        price_arr = np.array(prices, dtype=float)
+        if price_arr.size:
+            price_mean = float(np.mean(price_arr))
+            price_std = float(np.std(price_arr))
+            price_cv = float(price_std / price_mean) if price_mean else 0.0
+        else:
+            price_mean = price_std = price_cv = 0.0
+        velocity_arr = np.array(by_cat_velocity.get(cat, []), dtype=float)
+        if velocity_arr.size:
+            velocity_mean = float(np.mean(velocity_arr))
+            velocity_std = float(np.std(velocity_arr))
+            velocity_cv = float(velocity_std / velocity_mean) if velocity_mean else 0.0
+        else:
+            velocity_mean = velocity_std = velocity_cv = 0.0
+        cat_stats[cat] = {
+            "price_mean": price_mean,
+            "price_std": price_std,
+            "price_cv": price_cv,
+            "velocity_mean": velocity_mean,
+            "velocity_std": velocity_std,
+            "velocity_cv": velocity_cv,
+            "price_count": float(price_arr.size),
+            "velocity_count": float(velocity_arr.size),
+        }
 
     for item in items:
         sku = item["SKU"]
@@ -102,6 +135,15 @@ def _render_exceptions(items: list[dict[str, Any]]) -> tuple[str, dict[str, Any]
         unit_cost = float(item.get("UnitCost", 0))
         cat = item.get("Category", "UNKNOWN")
         cat_median = cat_medians.get(cat, selling_price or unit_cost)
+        stats = cat_stats.get(cat, {})
+        price_mean = stats.get("price_mean", 0.0)
+        price_std = stats.get("price_std", 0.0)
+        price_cv = stats.get("price_cv", 0.0)
+        price_count = int(stats.get("price_count", 0))
+        velocity_mean = stats.get("velocity_mean", 0.0)
+        velocity_std = stats.get("velocity_std", 0.0)
+        velocity_cv = stats.get("velocity_cv", 0.0)
+        velocity_count = int(stats.get("velocity_count", 0))
 
         if velocity * lead > reorder_point * 1.2:
             anomalies.append(
@@ -121,6 +163,34 @@ def _render_exceptions(items: list[dict[str, Any]]) -> tuple[str, dict[str, Any]
                     "recommendation": "Verify price entry and compare with vendor catalog.",
                 }
             )
+        if price_count >= 3 and price_std > 0:
+            price_z = (selling_price - price_mean) / price_std
+            price_z_threshold = 2.5 if price_cv > 0.6 else 2.0
+            if abs(price_z) >= price_z_threshold:
+                anomalies.append(
+                    {
+                        "sku": sku,
+                        "type": "price_zscore_outlier",
+                        "note": (
+                            f"Price z-score {price_z:.2f} (category CV {price_cv:.2f})."
+                        ),
+                        "recommendation": "Validate price, check for data entry or vendor updates.",
+                    }
+                )
+        if velocity_count >= 3 and velocity_std > 0:
+            velocity_z = (velocity - velocity_mean) / velocity_std
+            velocity_z_threshold = 2.5 if velocity_cv > 0.6 else 2.0
+            if abs(velocity_z) >= velocity_z_threshold:
+                anomalies.append(
+                    {
+                        "sku": sku,
+                        "type": "velocity_zscore_outlier",
+                        "note": (
+                            f"Velocity z-score {velocity_z:.2f} (category CV {velocity_cv:.2f})."
+                        ),
+                        "recommendation": "Review demand signals and validate velocity calculation.",
+                    }
+                )
         if unit_cost >= selling_price:
             anomalies.append(
                 {
@@ -154,11 +224,21 @@ def _render_exceptions(items: list[dict[str, Any]]) -> tuple[str, dict[str, Any]
 
 
 def _render_markdown(tool_output: dict[str, Any]) -> tuple[str, dict[str, Any]]:
-    items = [item for item in tool_output.get("items", []) if item["recommended_markdown"] > 0]
+    items = tool_output.get("items", [])
+    markdowns = [item for item in items if item.get("recommended_markdown", 0) > 0]
+    status_counts: dict[str, int] = {}
+    for item in items:
+        status = item.get("status", "UNKNOWN")
+        status_counts[status] = status_counts.get(status, 0) + 1
     summary = (
-        f"Found {len(items)} items needing markdown." if items else "No markdown needed."
+        f"Markdown review: {len(markdowns)} items need markdown; "
+        f"{status_counts.get('STOCKOUT_RISK', 0)} stockout risks, "
+        f"{status_counts.get('HEALTHY', 0)} healthy, "
+        f"{status_counts.get('MONITOR', 0)} monitor."
+        if items
+        else "No inventory items available for markdown review."
     )
-    return summary, {"markdowns": items}
+    return summary, {"markdowns": markdowns, "items": items, "status_counts": status_counts}
 
 
 def _copilot_tool_choice(text: str) -> tuple[str, dict[str, Any]]:
@@ -184,6 +264,7 @@ def _llm_or_fallback(
 
         tool_context = json.dumps(tool_output, ensure_ascii=False)[:4000]
     llm_messages = [
+        {"role": "system", "content": "所有回复必须使用中文，简洁清晰。"},
         {"role": "system", "content": system_prompt},
         *messages,
         {"role": "system", "content": f"Tool summary: {tool_summary}"},

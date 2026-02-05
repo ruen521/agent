@@ -1,4 +1,6 @@
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default function ChatPanel({
   agents,
@@ -23,6 +25,11 @@ export default function ChatPanel({
     onSend(input.trim());
     setInput("");
   };
+
+  const looksLikeMarkdown = (text) =>
+    /(^|\n)#{1,6}\s|\|[- :]+\|/m.test(text) ||
+    /```/.test(text) ||
+    /(^|\n)(- |\* |\d+\. )/.test(text);
 
   return (
     <div className="panel chat-panel">
@@ -74,7 +81,15 @@ export default function ChatPanel({
         ) : (
           messages.map((message, idx) => (
             <div key={idx} className={`chat-bubble ${message.role}`}>
-              <span>{message.content}</span>
+              {looksLikeMarkdown(message.content) ? (
+                <div className="markdown-content">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {message.content}
+                  </ReactMarkdown>
+                </div>
+              ) : (
+                <span>{message.content}</span>
+              )}
             </div>
           ))
         )}

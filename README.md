@@ -82,6 +82,11 @@ npm run dev
 - 缺货数量和风险金额
 - 供应商联系信息
 
+**输出**：
+- `count`
+- `items[]`：SKU、CurrentStock、ReorderPoint、DailySalesVelocity、days_until_stockout、urgency_level、
+  shortage_amount、revenue_at_risk、vendor_name/vendor_phone/vendor_email/vendor_lead_time_days 等
+
 ### 2. 补货计算工具（inventory_replenishment_tool）
 
 **计算公式**：
@@ -94,9 +99,18 @@ npm run dev
 - 校验最低起订金额
 - 计算预计到货日期
 
+**输出**：
+- `created_at`、`total_cost`、`target_safety_days`
+- `vendor_groups[]`：vendor_id/vendor_name/minimum_order/lead_time_days/items/total_cost/meets_minimum_order/warning
+- `items[]`：SKU、recommended_qty、unit_cost、line_cost、eta_days、expected_delivery_date
+
 ### 3. 供应商信息工具（inventory_vendor_info_tool）
 
 **提供数据**：供应商名称、联系方式、供货交期、最低起订金额、评分
+
+**输出**：
+- `count`
+- `vendors[]`：VendorID、Name、PhoneNumber、Email、LeadTimeDays、MinimumOrder、Rating
 
 ### 4. 清仓折扣计算工具（inventory_markdown_calculator）
 
@@ -106,11 +120,18 @@ npm run dev
 - 90-180 天：30% off
 - 180+ 天：50% off
 
-**输出**：预计清仓天数、促销收入、节省仓储成本、净收益
+**输出**：
+- `count`
+- `items[]`：SKU、days_of_supply、status、recommended_markdown、expected_velocity_multiplier、
+  days_to_clear、revenue_at_markdown、holding_cost_avoided、net_benefit
 
 ### 5. 统计指标工具（stats_calculator）
 
 **统计维度**：SKU 总数、低库存数量、断货风险数量、紧急风险数量、品类数量
+
+**输出**：
+- `total_skus`、`stockout_risks`、`critical_risks`、`low_stock_items`
+- `total_categories`、`categories`
 
 ---
 
@@ -156,4 +177,3 @@ npm run dev
 - 提供综合性建议
 
 ---
-
