@@ -2,6 +2,19 @@
 
 一个多智能体库存管理系统，覆盖缺货预警、补货规划、异常检测、清仓建议与对话式分析。后端基于 FastAPI + LangGraph + MySQL，前端基于 React + Vite。支持 MySQL 数据源（目前是虚拟数据）。
 
+## 项目文件导航
+- `app/`：后端主代码
+- `frontend/`：前端页面与组件
+- `data/`：Mock 数据（仅在未连接 MySQL 时使用）
+- `docs/`：技术文档与问题清单（含 MySQL 配置、API 说明）
+- `scripts/`：初始化/生成数据/健康检查/性能脚本
+- `README-2.md`：产品规格与目标能力（当前对齐基准）
+- `README-2.zh.md`：README-2 的中文版本
+- `DELIVERY.md`：交付与运行指南
+- `DEV_PLAN.md`：开发计划与里程碑
+- `.env.example`：环境变量示例（MySQL、API Key 等）
+- `requirements.txt` / `requirements-dev.txt`：后端依赖与开发依赖
+
 ## 功能概览
 - 五个智能体：缺货哨兵、补货规划、异常侦测、清仓教练、库存助手
 - 工具层：库存查询、补货计算、供应商信息、清仓折扣、统计指标
