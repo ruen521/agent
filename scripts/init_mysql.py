@@ -26,7 +26,8 @@ def _migrate_columns(repo: MysqlRepository) -> None:
 
     engine = repo.engine
     inspector = inspect(engine)
-    if "inventory_items" not in inspector.get_table_names():
+    table_names = set(inspector.get_table_names())
+    if "inventory_items" not in table_names:
         return
     columns = {col["name"] for col in inspector.get_columns("inventory_items")}
     alters = []
@@ -39,11 +40,47 @@ def _migrate_columns(repo: MysqlRepository) -> None:
     if "substitute_skus" not in columns:
         alters.append("ADD COLUMN substitute_skus JSON NULL")
 
+    if alters:
+        alter_sql = "ALTER TABLE inventory_items " + ", ".join(alters)
+        with engine.begin() as conn:
+            conn.execute(text(alter_sql))
+
+    if "vendor_call_logs" in table_names:
+        _migrate_vendor_call_logs(inspector, engine)
+    if "replenishment_plans" in table_names:
+        _migrate_replenishment_plans(inspector, engine)
+
+
+def _migrate_vendor_call_logs(inspector, engine) -> None:
+    from sqlalchemy import text
+
+    columns = {col["name"] for col in inspector.get_columns("vendor_call_logs")}
+    alters = []
+    if "duration" not in columns:
+        alters.append("ADD COLUMN duration INT NULL")
+    if "outcome" not in columns:
+        alters.append("ADD COLUMN outcome VARCHAR(64) NULL")
+    if "recording_url" not in columns:
+        alters.append("ADD COLUMN recording_url VARCHAR(1024) NULL")
     if not alters:
         return
-    alter_sql = "ALTER TABLE inventory_items " + ", ".join(alters)
     with engine.begin() as conn:
-        conn.execute(text(alter_sql))
+        conn.execute(text("ALTER TABLE vendor_call_logs " + ", ".join(alters)))
+
+
+def _migrate_replenishment_plans(inspector, engine) -> None:
+    from sqlalchemy import text
+
+    columns = {col["name"] for col in inspector.get_columns("replenishment_plans")}
+    alters = []
+    if "created_by" not in columns:
+        alters.append("ADD COLUMN created_by VARCHAR(128) NULL")
+    if "status" not in columns:
+        alters.append("ADD COLUMN status VARCHAR(64) NULL")
+    if not alters:
+        return
+    with engine.begin() as conn:
+        conn.execute(text("ALTER TABLE replenishment_plans " + ", ".join(alters)))
 
 
 if __name__ == "__main__":

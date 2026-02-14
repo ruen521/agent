@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <title>{{ title }}</title>
+</head>
+<body>
+  <h1>{{ title }}</h1>
+  <div class="meta">导出时间：{{ generated_at }} ｜ 导出类型：{{ audience }}</div>
+
+  <h2>运营总览</h2>
+  <div class="card">
+    <table>
+      <tbody>
+        {% for key, value in stats.items() %}
+        <tr>
+          <th>{{ key }}</th>
+          <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <h2>风险洞察（前20）</h2>
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>SKU</th>
+          <th>断货天数</th>
+          <th>紧急度</th>
+          <th>缺口</th>
+          <th>风险金额</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in risks[:20] %}
+        <tr>
+          <td>{{ item.SKU }}</td>
+          <td>{{ item.days_until_stockout }}</td>
+          <td>{{ item.urgency_level }}</td>
+          <td>{{ item.shortage_amount }}</td>
+          <td>{{ item.revenue_at_risk }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <h2>最新会话结论</h2>
+  <div class="card">
+    {% if latest_agent_summaries %}
+      {% for item in latest_agent_summaries %}
+      <p><strong>{{ item.agent or "-" }}</strong>：{{ item.summary or "-" }}</p>
+      {% endfor %}
+    {% else %}
+      <p class="muted">暂无补充结论</p>
+    {% endif %}
+  </div>
+
+  <h2>库存明细（前30）</h2>
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>SKU</th>
+          <th>名称</th>
+          <th>类目</th>
+          <th>库存</th>
+          <th>补货点</th>
+          <th>日销量</th>
+          <th>供应商</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in inventory[:30] %}
+        <tr>
+          <td>{{ item.SKU }}</td>
+          <td>{{ item.Name }}</td>
+          <td>{{ item.Category }}</td>
+          <td>{{ item.CurrentStock }}</td>
+          <td>{{ item.ReorderPoint }}</td>
+          <td>{{ item.DailySalesVelocity }}</td>
+          <td>{{ item.VendorID }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
+

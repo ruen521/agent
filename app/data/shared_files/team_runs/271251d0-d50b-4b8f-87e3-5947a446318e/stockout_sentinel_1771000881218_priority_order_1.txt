@@ -1,0 +1,6 @@
+[
+  "Stockout risks and urgent SKUs",
+  "Inventory exception anomalies",
+  "Replenishment plan",
+  "Markdown clearance plan"
+]

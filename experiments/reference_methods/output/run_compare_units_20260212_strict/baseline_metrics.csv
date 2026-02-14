@@ -1,0 +1,4 @@
+method_code,method_name,scope,sample_count,mad,poa,mae,wape,bias,runnable_asin_count,not_applicable_asin_count,coverage_rate
+B07,Baseline Last 7 Period Mean,day_pbf_3,399,2.554959,137.98118,2.554959,0.872052,0.379812,133,0,1.0
+B07,Baseline Last 7 Period Mean,week_pbf_3,399,13.816327,128.442542,13.816327,0.614025,0.284425,133,0,1.0
+B07,Baseline Last 7 Period Mean,day_pbf_14,1862,1.929108,108.529675,1.929108,0.53564,0.085297,133,0,1.0

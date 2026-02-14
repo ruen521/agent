@@ -1,0 +1,25 @@
+# Markdown Clearance Plan
+
+## SKU: APP-000044
+- **Item Name**: Apparel Item 000044
+- **Category**: Apparel
+- **Current Stock**: 58
+- **Recommended Markdown**: 50%
+- **Expected Velocity Multiplier**: 3.0
+- **Days to Clear**: Infinity
+- **Revenue at Markdown**: $1479.58
+- **Holding Cost Avoided**: $0.00
+- **Net Benefit**: -$1479.58
+- **Status**: AGGRESSIVE_CLEARANCE
+
+## SKU: APP-000068
+- **Item Name**: Apparel Item 000068
+- **Category**: Apparel
+- **Current Stock**: 25
+- **Recommended Markdown**: 50%
+- **Expected Velocity Multiplier**: 3.0
+- **Days to Clear**: Infinity
+- **Revenue at Markdown**: $245.62
+- **Holding Cost Avoided**: $0.00
+- **Net Benefit**: -$245.63
+- **Status**: AGGRESSIVE_CLEARANCE

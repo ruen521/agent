@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-02-13T14:59:43.112543+00:00",
+  "run_id": "r-parse",
+  "attempt": 1,
+  "payload_source_type": "dict",
+  "payload_source": {
+    "summary": "bad contract"
+  },
+  "raw_response_type": "dict",
+  "raw_response": {
+    "content": {
+      "summary": "bad contract"
+    }
+  }
+}

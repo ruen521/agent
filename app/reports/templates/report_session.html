@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <title>{{ title }}</title>
+</head>
+<body>
+  <h1>{{ title }}</h1>
+  <div class="meta">
+    导出时间：{{ generated_at }} ｜ 导出类型：{{ audience }} ｜ 会话：{{ session_id }} ｜ 智能体：{{ agent_id }}
+  </div>
+
+  <h2>会话记录</h2>
+  {% for message in messages %}
+  <div class="card">
+    <p><strong>{{ message.role }}</strong> <span class="muted">{{ message.created_at or "" }}</span></p>
+    <p>{{ message.content }}</p>
+    {% if message.meta %}
+      <p class="muted">模型：{{ message.meta.model or "-" }} ｜ 请求ID：{{ message.meta.request_id or "-" }}</p>
+      {% if message.meta.tool_trace %}
+      <table>
+        <thead>
+          <tr>
+            <th>工具</th>
+            <th>API</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for trace in message.meta.tool_trace %}
+          <tr>
+            <td>{{ trace.tool or "-" }}</td>
+            <td>{{ trace.apiPath or "-" }}</td>
+            <td>{{ trace.httpStatusCode or "-" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endif %}
+
+      {% if message.meta.reasoning %}
+      <p><strong>推理摘要</strong></p>
+      <pre>{{ message.meta.reasoning }}</pre>
+      {% endif %}
+    {% endif %}
+  </div>
+  {% endfor %}
+</body>
+</html>
+

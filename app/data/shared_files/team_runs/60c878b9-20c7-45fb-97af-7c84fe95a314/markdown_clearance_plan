@@ -1,0 +1,48 @@
+# Markdown Clearance Plan
+
+## Critical Anomalies
+
+### SKU: B0B18XTX3L
+- **Name**: ASIN B0B18XTX3L
+- **Category**: RealImport
+- **Current Stock**: 38
+- **Reorder Point**: 362
+- **Daily Sales Velocity**: 25.8571
+- **Days Until Stockout**: 1.47
+- **Recommended Markdown**: 0.0%
+- **Revenue at Markdown**: $38.00
+- **Net Benefit**: $0.00
+
+### SKU: B0B9Y3YL58
+- **Name**: ASIN B0B9Y3YL58
+- **Category**: RealImport
+- **Current Stock**: 0
+- **Reorder Point**: 4
+- **Daily Sales Velocity**: 0.7229
+- **Days Until Stockout**: 0.0
+- **Recommended Markdown**: 0.0%
+- **Revenue at Markdown**: $0.00
+- **Net Benefit**: $0.00
+
+## Low Urgency Items
+
+### SKU: APP-000044
+- **Name**: Apparel Item 000044
+- **Category**: Apparel
+- **Current Stock**: 58
+- **Reorder Point**: 66
+- **Daily Sales Velocity**: 0.0
+- **Days Until Stockout**: Infinite
+- **Recommended Markdown**: 50.0%
+- **Expected Velocity Multiplier**: 3.0
+- **Revenue at Markdown**: $1479.58
+- **Net Benefit**: -$1479.58
+
+## Summary
+- Total SKUs analyzed: 3
+- SKUs with stockout risk: 2
+- SKUs recommended for markdown: 1
+
+### Recommendations
+1. **No markdowns** are recommended for critical anomalies as they are at stockout risk.
+2. Implement a **50% markdown** for SKU APP-000044 to clear excess inventory, despite a negative net benefit.

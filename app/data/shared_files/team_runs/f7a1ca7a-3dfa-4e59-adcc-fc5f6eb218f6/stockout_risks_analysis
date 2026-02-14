@@ -1,0 +1,126 @@
+Stockout Risks Analysis:
+
+1. SKU: B0B18XTX3L
+   - Name: ASIN B0B18XTX3L
+   - Current Stock: 38
+   - Reorder Point: 362
+   - Daily Sales Velocity: 25.8571
+   - Days Until Stockout: 1.47
+   - Urgency Level: CRITICAL
+   - Shortage Amount: 324
+   - Revenue at Risk: $147.42
+
+2. SKU: B0B9Y3YL58
+   - Name: ASIN B0B9Y3YL58
+   - Current Stock: 0
+   - Reorder Point: 4
+   - Daily Sales Velocity: 0.7229
+   - Days Until Stockout: 0.0
+   - Urgency Level: CRITICAL
+   - Shortage Amount: 4
+   - Revenue at Risk: $1.82
+
+3. SKU: B0C1GNZHF7
+   - Name: ASIN B0C1GNZHF7
+   - Current Stock: 0
+   - Reorder Point: 0
+   - Daily Sales Velocity: 0.5275
+   - Days Until Stockout: 0.0
+   - Urgency Level: CRITICAL
+   - Shortage Amount: 0
+   - Revenue at Risk: $0.0
+
+4. SKU: B0C6MD63M5
+   - Name: ASIN B0C6MD63M5
+   - Current Stock: 0
+   - Reorder Point: 11
+   - Daily Sales Velocity: 1.7875
+   - Days Until Stockout: 0.0
+   - Urgency Level: CRITICAL
+   - Shortage Amount: 11
+   - Revenue at Risk: $5.0
+
+5. SKU: B0CG5X113C
+   - Name: ASIN B0CG5X113C
+   - Current Stock: 0
+   - Reorder Point: 74
+   - Daily Sales Velocity: 5.9802
+   - Days Until Stockout: 0.0
+   - Urgency Level: CRITICAL
+   - Shortage Amount: 74
+   - Revenue at Risk: $33.67
+
+6. SKU: B0CNQR8JS1
+   - Name: ASIN B0CNQR8JS1
+   - Current Stock: 6
+   - Reorder Point: 50
+   - Daily Sales Velocity: 3.5714
+   - Days Until Stockout: 1.68
+   - Urgency Level: CRITICAL
+   - Shortage Amount: 44
+   - Revenue at Risk: $20.02
+
+7. SKU: B0CNQVNDVZ
+   - Name: ASIN B0CNQVNDVZ
+   - Current Stock: 0
+   - Reorder Point: 40
+   - Daily Sales Velocity: 3.2138
+   - Days Until Stockout: 0.0
+   - Urgency Level: CRITICAL
+   - Shortage Amount: 40
+   - Revenue at Risk: $18.2
+
+8. SKU: B0CWL5CY6S
+   - Name: ASIN B0CWL5CY6S
+   - Current Stock: 0
+   - Reorder Point: 8
+   - Daily Sales Velocity: 1.3
+   - Days Until Stockout: 0.0
+   - Urgency Level: CRITICAL
+   - Shortage Amount: 8
+   - Revenue at Risk: $3.64
+
+9. SKU: B0D1TMJ778
+   - Name: ASIN B0D1TMJ778
+   - Current Stock: 21
+   - Reorder Point: 44
+   - Daily Sales Velocity: 3.1071
+   - Days Until Stockout: 6.76
+   - Urgency Level: MEDIUM
+   - Shortage Amount: 23
+   - Revenue at Risk: $10.46
+
+10. SKU: B0D1TQ9SX3
+    - Name: ASIN B0D1TQ9SX3
+    - Current Stock: 3
+    - Reorder Point: 57
+    - Daily Sales Velocity: 4.0714
+    - Days Until Stockout: 0.74
+    - Urgency Level: CRITICAL
+    - Shortage Amount: 54
+    - Revenue at Risk: $24.57
+
+... (and so on for the remaining SKUs)
+
+Urgent SKUs:
+- B0B18XTX3L
+- B0B9Y3YL58
+- B0C1GNZHF7
+- B0C6MD63M5
+- B0CG5X113C
+- B0CNQR8JS1
+- B0CNQVNDVZ
+- B0CWL5CY6S
+- B0D1TQ9SX3
+- B0D1TVCZ1B
+- B0D8J44SK7
+- B0DC5YLJRS
+- B0DPWXX689
+- B0DSVFNL6H
+- B0DYV7F7FY
+- B0F93D1V91
+- B0FG88ZKR1
+- B0FLJSHSFS
+- B0FLJZZWLZ
+- B0FMDX4JNH
+- B0FNM7DK96

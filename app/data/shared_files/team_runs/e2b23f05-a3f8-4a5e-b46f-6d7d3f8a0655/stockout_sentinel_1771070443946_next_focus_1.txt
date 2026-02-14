@@ -1,0 +1,6 @@
+{
+  "stockout_sentinel": "Enhance detection algorithms for accuracy.",
+  "exception_investigator": "Expand anomaly detection to include new metrics.",
+  "replenishment_planner": "Optimize replenishment schedules.",
+  "markdown_clearance_coach": "Refine markdown strategies for seasonal items."
+}

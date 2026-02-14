@@ -1,0 +1,3 @@
+# Demo runs inside this project runtime.
+# If you want isolated install, use project root requirements.
+-r ../../requirements.txt

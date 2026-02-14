@@ -1,0 +1,6 @@
+{
+  "stockout_sentinel": "Monitor urgent SKUs for real-time stockout risks.",
+  "exception_investigator": "Expand anomaly detection scope to include seasonal trends.",
+  "replenishment_planner": "Optimize replenishment cycles for high-demand SKUs.",
+  "markdown_clearance_coach": "Evaluate markdown impact on inventory turnover rates."
+}

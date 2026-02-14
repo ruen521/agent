@@ -1,0 +1,37 @@
+method_code,method_name,scope,sample_count,mad,poa,mae,wape,bias,runnable_asin_count,not_applicable_asin_count,coverage_rate
+M01,Specified Percent Over Last Year,day_pbf_3,0,0.0,0.0,0.0,0.0,0.0,0,133,0.0
+M02,Calculated Percent Over Last Year,day_pbf_3,0,0.0,0.0,0.0,0.0,0.0,0,133,0.0
+M03,Last year to This year,day_pbf_3,0,0.0,0.0,0.0,0.0,0.0,0,133,0.0
+M04,Moving Average,day_pbf_3,399,2.680869,140.233818,2.680869,0.915027,0.402338,133,0,1.0
+M05,Linear Approximation,day_pbf_3,399,3.369674,145.97947,3.369674,1.150128,0.459795,133,0,1.0
+M06,Least Square Regression,day_pbf_3,399,3.370092,148.018249,3.370092,1.150271,0.480182,133,0,1.0
+M07,Second Degree Approximation,day_pbf_3,399,5.955723,109.153121,5.955723,2.032792,0.091531,133,0,1.0
+M08,Flexible Method,day_pbf_3,399,3.418797,154.448246,3.418797,1.166895,0.544482,133,0,1.0
+M09,Weighted Moving Average,day_pbf_3,399,2.615288,141.976048,2.615288,0.892643,0.41976,133,0,1.0
+M10,Linear Smoothing,day_pbf_3,399,2.62949,141.531223,2.62949,0.897491,0.415312,133,0,1.0
+M11,Exponential Smoothing,day_pbf_3,399,2.62949,141.531223,2.62949,0.897491,0.415312,133,0,1.0
+M12,Exponential Smoothing with Trend and Seasonality,day_pbf_3,21,11.480057,160.166797,11.480057,0.902926,0.601668,7,126,0.052632
+M01,Specified Percent Over Last Year,week_pbf_3,0,0.0,0.0,0.0,0.0,0.0,0,133,0.0
+M02,Calculated Percent Over Last Year,week_pbf_3,0,0.0,0.0,0.0,0.0,0.0,0,133,0.0
+M03,Last year to This year,week_pbf_3,0,0.0,0.0,0.0,0.0,0.0,0,133,0.0
+M04,Moving Average,week_pbf_3,399,12.248956,131.254177,12.248956,0.544368,0.312542,133,0,1.0
+M05,Linear Approximation,week_pbf_3,399,13.358396,112.007129,13.358396,0.593673,0.120071,133,0,1.0
+M06,Least Square Regression,week_pbf_3,399,13.862991,110.002228,13.862991,0.616099,0.100022,133,0,1.0
+M07,Second Degree Approximation,week_pbf_3,399,41.094403,214.457563,41.094403,1.826316,1.144576,133,0,1.0
+M08,Flexible Method,week_pbf_3,399,19.482957,165.46781,19.482957,0.865861,0.654678,133,0,1.0
+M09,Weighted Moving Average,week_pbf_3,399,11.110777,126.14168,11.110777,0.493785,0.261417,133,0,1.0
+M10,Linear Smoothing,week_pbf_3,399,11.450292,127.712185,11.450292,0.508874,0.277122,133,0,1.0
+M11,Exponential Smoothing,week_pbf_3,399,11.450292,127.712185,11.450292,0.508874,0.277122,133,0,1.0
+M12,Exponential Smoothing with Trend and Seasonality,week_pbf_3,0,0.0,0.0,0.0,0.0,0.0,0,133,0.0
+M01,Specified Percent Over Last Year,day_pbf_14,0,0.0,0.0,0.0,0.0,0.0,0,133,0.0
+M02,Calculated Percent Over Last Year,day_pbf_14,0,0.0,0.0,0.0,0.0,0.0,0,133,0.0
+M03,Last year to This year,day_pbf_14,0,0.0,0.0,0.0,0.0,0.0,0,133,0.0
+M04,Moving Average,day_pbf_14,1862,1.974937,107.68466,1.974937,0.548365,0.076847,133,0,1.0
+M05,Linear Approximation,day_pbf_14,1862,2.775779,107.761706,2.775779,0.770728,0.077617,133,0,1.0
+M06,Least Square Regression,day_pbf_14,1862,2.748836,108.057461,2.748836,0.763247,0.080575,133,0,1.0
+M07,Second Degree Approximation,day_pbf_14,1862,28.520229,-5.626802,28.520229,7.918978,-1.056268,133,0,1.0
+M08,Flexible Method,day_pbf_14,1862,2.684613,123.282881,2.684613,0.745415,0.232829,133,0,1.0
+M09,Weighted Moving Average,day_pbf_14,1862,1.956391,107.748285,1.956391,0.543215,0.077483,133,0,1.0
+M10,Linear Smoothing,day_pbf_14,1862,1.948711,107.746794,1.948711,0.541083,0.077468,133,0,1.0
+M11,Exponential Smoothing,day_pbf_14,1862,1.948711,107.746794,1.948711,0.541083,0.077468,133,0,1.0
+M12,Exponential Smoothing with Trend and Seasonality,day_pbf_14,98,10.877417,150.493597,10.877417,0.650786,0.504936,7,126,0.052632

@@ -1,0 +1,1148 @@
+{
+  "response_text": "[综合结论] Team V1 执行完成：成功 4，失败 0。",
+  "structured_output": {
+    "team_version": "v1",
+    "status": "team_v1_completed",
+    "team_plan": [
+      "exception_investigator",
+      "stockout_sentinel",
+      "replenishment_planner",
+      "markdown_clearance_coach"
+    ],
+    "team_execution": [
+      {
+        "member_id": "exception_investigator",
+        "member_label": "异常侦测",
+        "result_status": "success",
+        "summary": "Scanned inventory data for anomalies.",
+        "response_text": "[exception_investigator] Detected 2 anomalies.",
+        "structured_output": {
+          "anomalies": [
+            {
+              "sku": "APP-000090",
+              "type": "velocity_reorder_mismatch",
+              "note": "Velocity * lead time exceeds reorder point by >20%.",
+              "recommendation": "Review velocity and raise reorder point to 10-14 days coverage."
+            },
+            {
+              "sku": "APP-000203",
+              "type": "velocity_reorder_mismatch",
+              "note": "Velocity * lead time exceeds reorder point by >20%.",
+              "recommendation": "Review velocity and raise reorder point to 10-14 days coverage."
+            }
+          ],
+          "summary": "Detected 2 anomalies."
+        },
+        "tool_outputs": {
+          "count": 3,
+          "items": [
+            {
+              "SKU": "APP-000078",
+              "Category": "Home",
+              "SellingPrice": 99.0,
+              "UnitCost": 48.0,
+              "DailySalesVelocity": 0.1,
+              "LeadTimeDays": 10,
+              "ReorderPoint": 3,
+              "CurrentStock": 120
+            },
+            {
+              "SKU": "APP-000090",
+              "Category": "Home",
+              "SellingPrice": 79.0,
+              "UnitCost": 42.0,
+              "DailySalesVelocity": 18.0,
+              "LeadTimeDays": 6,
+              "ReorderPoint": 20,
+              "CurrentStock": 22
+            },
+            {
+              "SKU": "APP-000203",
+              "Category": "Beauty",
+              "SellingPrice": 39.0,
+              "UnitCost": 29.0,
+              "DailySalesVelocity": 12.0,
+              "LeadTimeDays": 8,
+              "ReorderPoint": 15,
+              "CurrentStock": 17
+            }
+          ]
+        },
+        "retrieval_hits": [],
+        "tool_trace": [
+          {
+            "tool": "inventory_query",
+            "apiPath": "/inventory_query",
+            "httpStatusCode": 200,
+            "args": {
+              "query_type": "all"
+            }
+          }
+        ],
+        "started_at": "2026-02-14T14:12:02.910118+00:00",
+        "ended_at": "2026-02-14T14:12:02.911475+00:00",
+        "latency_ms": 1.35,
+        "error_code": "",
+        "error_message": ""
+      },
+      {
+        "member_id": "stockout_sentinel",
+        "member_label": "缺货哨兵",
+        "result_status": "success",
+        "summary": "Used stockout risk tool to identify urgent SKUs.",
+        "response_text": "[stockout_sentinel] Top risks: APP-000090 (2 days, $4291.0 risk), APP-000203 (4 days, $1472.0 risk)",
+        "structured_output": {
+          "risks": [
+            {
+              "sku": "APP-000090",
+              "days": 2,
+              "shortage": 150,
+              "revenue_at_risk": 4291.0,
+              "urgency": "CRITICAL",
+              "vendor_name": "华东供应商A",
+              "vendor_phone": "13800000000",
+              "vendor_email": "a@vendor.com",
+              "lead_time_days": 5,
+              "actions": [
+                "Expedite vendor order",
+                "Consider temporary price increase",
+                "Review substitute SKUs"
+              ]
+            },
+            {
+              "sku": "APP-000203",
+              "days": 4,
+              "shortage": 80,
+              "revenue_at_risk": 1472.0,
+              "urgency": "HIGH",
+              "vendor_name": "华南供应商B",
+              "vendor_phone": "13900000000",
+              "vendor_email": "b@vendor.com",
+              "lead_time_days": 7,
+              "actions": [
+                "Expedite vendor order",
+                "Consider temporary price increase",
+                "Review substitute SKUs"
+              ]
+            }
+          ],
+          "summary": "Top risks: APP-000090 (2 days, $4291.0 risk), APP-000203 (4 days, $1472.0 risk)",
+          "vendors": [
+            {
+              "VendorID": "V001",
+              "vendor_name": "华东供应商A",
+              "phone": "13800000000"
+            },
+            {
+              "VendorID": "V002",
+              "vendor_name": "华南供应商B",
+              "phone": "13900000000"
+            }
+          ]
+        },
+        "tool_outputs": {
+          "count": 2,
+          "items": [
+            {
+              "SKU": "APP-000090",
+              "VendorID": "V001",
+              "days_until_stockout": 2,
+              "shortage_amount": 150,
+              "revenue_at_risk": 4291.0,
+              "urgency_level": "CRITICAL",
+              "vendor_name": "华东供应商A",
+              "vendor_phone": "13800000000",
+              "vendor_email": "a@vendor.com",
+              "vendor_lead_time_days": 5
+            },
+            {
+              "SKU": "APP-000203",
+              "VendorID": "V002",
+              "days_until_stockout": 4,
+              "shortage_amount": 80,
+              "revenue_at_risk": 1472.0,
+              "urgency_level": "HIGH",
+              "vendor_name": "华南供应商B",
+              "vendor_phone": "13900000000",
+              "vendor_email": "b@vendor.com",
+              "vendor_lead_time_days": 7
+            }
+          ],
+          "vendor_contacts": {
+            "V001": {
+              "VendorID": "V001",
+              "vendor_name": "华东供应商A",
+              "phone": "13800000000"
+            },
+            "V002": {
+              "VendorID": "V002",
+              "vendor_name": "华南供应商B",
+              "phone": "13900000000"
+            }
+          }
+        },
+        "retrieval_hits": [
+          {
+            "score": 5.0,
+            "evidence_id": "ev-48d8a1548a70",
+            "member_id": "exception_investigator",
+            "tool_name": "inventory_query",
+            "title_cn": "异常侦测-inventory_query-证据",
+            "content_excerpt": "成员结论：[exception_investigator] Detected 2 anomalies.\n工具输出摘要：{\"count\": 3, \"items\": [{\"SKU\": \"APP-000078\", \"Category\": \"Home\", \"SellingPrice\": 99.0, \"UnitCost\": 48.0, \"DailySalesVelocity\": 0.1, \"LeadTimeDays\": 10, \"ReorderPoint\": 3, \"CurrentStock\": 120}, {\"SKU\": \"APP-000090\", \"Category\": \"Home\", \"Selli",
+            "created_at": "2026-02-14T14:12:02.910799+00:00"
+          }
+        ],
+        "tool_trace": [
+          {
+            "tool": "inventory_query",
+            "apiPath": "/inventory_query",
+            "httpStatusCode": 200,
+            "args": {
+              "query_type": "stockout_risk"
+            }
+          },
+          {
+            "tool": "inventory_vendor_info",
+            "apiPath": "/inventory_vendor_info",
+            "httpStatusCode": 200,
+            "args": {}
+          }
+        ],
+        "started_at": "2026-02-14T14:12:02.912470+00:00",
+        "ended_at": "2026-02-14T14:12:02.913428+00:00",
+        "latency_ms": 0.97,
+        "error_code": "",
+        "error_message": ""
+      },
+      {
+        "member_id": "replenishment_planner",
+        "member_label": "补货规划",
+        "result_status": "success",
+        "summary": "Generated replenishment plan using low stock items.",
+        "response_text": "[replenishment_planner] Prepared replenishment plan across 1 vendors. Top vendor 华东供应商A total $12800.0. Target safety stock 14 days.",
+        "structured_output": {
+          "plan": {
+            "vendor_groups": [
+              {
+                "vendor_id": "V001",
+                "vendor_name": "华东供应商A",
+                "total_cost": 12800.0,
+                "items": [
+                  {
+                    "SKU": "APP-000090",
+                    "recommended_qty": 300,
+                    "line_cost": 12600.0,
+                    "expected_delivery_date": "2026-02-18"
+                  }
+                ]
+              }
+            ],
+            "total_cost": 12800.0,
+            "target_safety_days": 14
+          },
+          "summary": "Prepared replenishment plan across 1 vendors. Top vendor 华东供应商A total $12800.0. Target safety stock 14 days.",
+          "vendors": [
+            {
+              "VendorID": "V001",
+              "vendor_name": "华东供应商A",
+              "phone": "13800000000"
+            },
+            {
+              "VendorID": "V002",
+              "vendor_name": "华南供应商B",
+              "phone": "13900000000"
+            }
+          ]
+        },
+        "tool_outputs": {
+          "vendor_groups": [
+            {
+              "vendor_id": "V001",
+              "vendor_name": "华东供应商A",
+              "total_cost": 12800.0,
+              "items": [
+                {
+                  "SKU": "APP-000090",
+                  "recommended_qty": 300,
+                  "line_cost": 12600.0,
+                  "expected_delivery_date": "2026-02-18"
+                }
+              ]
+            }
+          ],
+          "total_cost": 12800.0,
+          "target_safety_days": 14,
+          "vendors": [
+            {
+              "VendorID": "V001",
+              "vendor_name": "华东供应商A",
+              "phone": "13800000000"
+            },
+            {
+              "VendorID": "V002",
+              "vendor_name": "华南供应商B",
+              "phone": "13900000000"
+            }
+          ]
+        },
+        "retrieval_hits": [
+          {
+            "score": 24.0275,
+            "evidence_id": "ev-32f0d47924c5",
+            "member_id": "stockout_sentinel",
+            "tool_name": "inventory_query",
+            "title_cn": "缺货哨兵-inventory_query-证据",
+            "content_excerpt": "成员结论：[stockout_sentinel] Top risks: APP-000090 (2 days, $4291.0 risk), APP-000203 (4 days, $1472.0 risk)\n工具输出摘要：{\"count\": 2, \"items\": [{\"SKU\": \"APP-000090\", \"VendorID\": \"V001\", \"days_until_stockout\": 2, \"shortage_amount\": 150, \"revenue_at_risk\": 4291.0, \"urgency_level\": \"CRITICAL\", \"vendor_name\": \"华",
+            "created_at": "2026-02-14T14:12:02.912900+00:00"
+          },
+          {
+            "score": 24.0275,
+            "evidence_id": "ev-3daebcf40a9f",
+            "member_id": "stockout_sentinel",
+            "tool_name": "inventory_vendor_info",
+            "title_cn": "缺货哨兵-inventory_vendor_info-证据",
+            "content_excerpt": "成员结论：[stockout_sentinel] Top risks: APP-000090 (2 days, $4291.0 risk), APP-000203 (4 days, $1472.0 risk)\n工具输出摘要：{\"count\": 2, \"items\": [{\"SKU\": \"APP-000090\", \"VendorID\": \"V001\", \"days_until_stockout\": 2, \"shortage_amount\": 150, \"revenue_at_risk\": 4291.0, \"urgency_level\": \"CRITICAL\", \"vendor_name\": \"华",
+            "created_at": "2026-02-14T14:12:02.913165+00:00"
+          },
+          {
+            "score": 8.6931,
+            "evidence_id": "ev-48d8a1548a70",
+            "member_id": "exception_investigator",
+            "tool_name": "inventory_query",
+            "title_cn": "异常侦测-inventory_query-证据",
+            "content_excerpt": "成员结论：[exception_investigator] Detected 2 anomalies.\n工具输出摘要：{\"count\": 3, \"items\": [{\"SKU\": \"APP-000078\", \"Category\": \"Home\", \"SellingPrice\": 99.0, \"UnitCost\": 48.0, \"DailySalesVelocity\": 0.1, \"LeadTimeDays\": 10, \"ReorderPoint\": 3, \"CurrentStock\": 120}, {\"SKU\": \"APP-000090\", \"Category\": \"Home\", \"Selli",
+            "created_at": "2026-02-14T14:12:02.910799+00:00"
+          }
+        ],
+        "tool_trace": [
+          {
+            "tool": "inventory_replenishment",
+            "apiPath": "/inventory_replenishment",
+            "httpStatusCode": 200,
+            "args": {}
+          },
+          {
+            "tool": "inventory_vendor_info",
+            "apiPath": "/inventory_vendor_info",
+            "httpStatusCode": 200,
+            "args": {}
+          }
+        ],
+        "started_at": "2026-02-14T14:12:02.914011+00:00",
+        "ended_at": "2026-02-14T14:12:02.914833+00:00",
+        "latency_ms": 0.82,
+        "error_code": "",
+        "error_message": ""
+      },
+      {
+        "member_id": "markdown_clearance_coach",
+        "member_label": "清仓教练",
+        "result_status": "success",
+        "summary": "Calculated markdown tiers based on days of supply.",
+        "response_text": "[markdown_clearance_coach] Markdown review: 2 items need markdown; 0 stockout risks, 0 healthy, 0 monitor.",
+        "structured_output": {
+          "markdowns": [
+            {
+              "SKU": "APP-000635",
+              "recommended_markdown": 0.5,
+              "days_to_clear": 45,
+              "net_benefit": 980.0,
+              "status": "AGGRESSIVE_CLEARANCE"
+            },
+            {
+              "SKU": "APP-000450",
+              "recommended_markdown": 0.3,
+              "days_to_clear": 30,
+              "net_benefit": 420.0,
+              "status": "MARKDOWN_NOW"
+            }
+          ],
+          "items": [
+            {
+              "SKU": "APP-000635",
+              "recommended_markdown": 0.5,
+              "days_to_clear": 45,
+              "net_benefit": 980.0,
+              "status": "AGGRESSIVE_CLEARANCE"
+            },
+            {
+              "SKU": "APP-000450",
+              "recommended_markdown": 0.3,
+              "days_to_clear": 30,
+              "net_benefit": 420.0,
+              "status": "MARKDOWN_NOW"
+            }
+          ],
+          "status_counts": {
+            "AGGRESSIVE_CLEARANCE": 1,
+            "MARKDOWN_NOW": 1
+          },
+          "summary": "Markdown review: 2 items need markdown; 0 stockout risks, 0 healthy, 0 monitor."
+        },
+        "tool_outputs": {
+          "count": 2,
+          "items": [
+            {
+              "SKU": "APP-000635",
+              "recommended_markdown": 0.5,
+              "days_to_clear": 45,
+              "net_benefit": 980.0,
+              "status": "AGGRESSIVE_CLEARANCE"
+            },
+            {
+              "SKU": "APP-000450",
+              "recommended_markdown": 0.3,
+              "days_to_clear": 30,
+              "net_benefit": 420.0,
+              "status": "MARKDOWN_NOW"
+            }
+          ]
+        },
+        "retrieval_hits": [
+          {
+            "score": 9.0986,
+            "evidence_id": "ev-48d8a1548a70",
+            "member_id": "exception_investigator",
+            "tool_name": "inventory_query",
+            "title_cn": "异常侦测-inventory_query-证据",
+            "content_excerpt": "成员结论：[exception_investigator] Detected 2 anomalies.\n工具输出摘要：{\"count\": 3, \"items\": [{\"SKU\": \"APP-000078\", \"Category\": \"Home\", \"SellingPrice\": 99.0, \"UnitCost\": 48.0, \"DailySalesVelocity\": 0.1, \"LeadTimeDays\": 10, \"ReorderPoint\": 3, \"CurrentStock\": 120}, {\"SKU\": \"APP-000090\", \"Category\": \"Home\", \"Selli",
+            "created_at": "2026-02-14T14:12:02.910799+00:00"
+          },
+          {
+            "score": 7.6931,
+            "evidence_id": "ev-32f0d47924c5",
+            "member_id": "stockout_sentinel",
+            "tool_name": "inventory_query",
+            "title_cn": "缺货哨兵-inventory_query-证据",
+            "content_excerpt": "成员结论：[stockout_sentinel] Top risks: APP-000090 (2 days, $4291.0 risk), APP-000203 (4 days, $1472.0 risk)\n工具输出摘要：{\"count\": 2, \"items\": [{\"SKU\": \"APP-000090\", \"VendorID\": \"V001\", \"days_until_stockout\": 2, \"shortage_amount\": 150, \"revenue_at_risk\": 4291.0, \"urgency_level\": \"CRITICAL\", \"vendor_name\": \"华",
+            "created_at": "2026-02-14T14:12:02.912900+00:00"
+          },
+          {
+            "score": 7.6931,
+            "evidence_id": "ev-3daebcf40a9f",
+            "member_id": "stockout_sentinel",
+            "tool_name": "inventory_vendor_info",
+            "title_cn": "缺货哨兵-inventory_vendor_info-证据",
+            "content_excerpt": "成员结论：[stockout_sentinel] Top risks: APP-000090 (2 days, $4291.0 risk), APP-000203 (4 days, $1472.0 risk)\n工具输出摘要：{\"count\": 2, \"items\": [{\"SKU\": \"APP-000090\", \"VendorID\": \"V001\", \"days_until_stockout\": 2, \"shortage_amount\": 150, \"revenue_at_risk\": 4291.0, \"urgency_level\": \"CRITICAL\", \"vendor_name\": \"华",
+            "created_at": "2026-02-14T14:12:02.913165+00:00"
+          },
+          {
+            "score": 6.6931,
+            "evidence_id": "ev-81a0a54a8c5b",
+            "member_id": "replenishment_planner",
+            "tool_name": "inventory_replenishment",
+            "title_cn": "补货规划-inventory_replenishment-证据",
+            "content_excerpt": "成员结论：[replenishment_planner] Prepared replenishment plan across 1 vendors. Top vendor 华东供应商A total $12800.0. Target safety stock 14 days.\n工具输出摘要：{\"vendor_groups\": [{\"vendor_id\": \"V001\", \"vendor_name\": \"华东供应商A\", \"total_cost\": 12800.0, \"items\": [{\"SKU\": \"APP-000090\", \"recommended_qty\": 300, \"line_cost",
+            "created_at": "2026-02-14T14:12:02.914479+00:00"
+          },
+          {
+            "score": 6.6931,
+            "evidence_id": "ev-3085ee372d29",
+            "member_id": "replenishment_planner",
+            "tool_name": "inventory_vendor_info",
+            "title_cn": "补货规划-inventory_vendor_info-证据",
+            "content_excerpt": "成员结论：[replenishment_planner] Prepared replenishment plan across 1 vendors. Top vendor 华东供应商A total $12800.0. Target safety stock 14 days.\n工具输出摘要：{\"vendor_groups\": [{\"vendor_id\": \"V001\", \"vendor_name\": \"华东供应商A\", \"total_cost\": 12800.0, \"items\": [{\"SKU\": \"APP-000090\", \"recommended_qty\": 300, \"line_cost",
+            "created_at": "2026-02-14T14:12:02.914674+00:00"
+          }
+        ],
+        "tool_trace": [
+          {
+            "tool": "inventory_markdown",
+            "apiPath": "/inventory_markdown",
+            "httpStatusCode": 200,
+            "args": {}
+          }
+        ],
+        "started_at": "2026-02-14T14:12:02.915301+00:00",
+        "ended_at": "2026-02-14T14:12:02.915956+00:00",
+        "latency_ms": 0.67,
+        "error_code": "",
+        "error_message": ""
+      }
+    ],
+    "team_summary": {
+      "success_count": 4,
+      "failure_count": 0,
+      "partial_success_count": 0,
+      "successful_members": [
+        "exception_investigator",
+        "stockout_sentinel",
+        "replenishment_planner",
+        "markdown_clearance_coach"
+      ],
+      "failed_members": []
+    },
+    "rag_summary": {
+      "run_dir": "/Users/zhaosibo/mycode/demo/data/team_v1_runs/teamv1-96f989462f66",
+      "evidence_count": 6,
+      "retrieval_event_count": 4
+    }
+  },
+  "tool_output": {
+    "workflow_results": [
+      {
+        "agent_id": "exception_investigator",
+        "label": "异常侦测",
+        "status": "DONE",
+        "summary": "Scanned inventory data for anomalies.",
+        "response_text": "[exception_investigator] Detected 2 anomalies.",
+        "started_at": "2026-02-14T14:12:02.910118+00:00",
+        "finished_at": "2026-02-14T14:12:02.911475+00:00",
+        "structured_output": {
+          "anomalies": [
+            {
+              "sku": "APP-000090",
+              "type": "velocity_reorder_mismatch",
+              "note": "Velocity * lead time exceeds reorder point by >20%.",
+              "recommendation": "Review velocity and raise reorder point to 10-14 days coverage."
+            },
+            {
+              "sku": "APP-000203",
+              "type": "velocity_reorder_mismatch",
+              "note": "Velocity * lead time exceeds reorder point by >20%.",
+              "recommendation": "Review velocity and raise reorder point to 10-14 days coverage."
+            }
+          ],
+          "summary": "Detected 2 anomalies."
+        }
+      },
+      {
+        "agent_id": "stockout_sentinel",
+        "label": "缺货哨兵",
+        "status": "DONE",
+        "summary": "Used stockout risk tool to identify urgent SKUs.",
+        "response_text": "[stockout_sentinel] Top risks: APP-000090 (2 days, $4291.0 risk), APP-000203 (4 days, $1472.0 risk)",
+        "started_at": "2026-02-14T14:12:02.912470+00:00",
+        "finished_at": "2026-02-14T14:12:02.913428+00:00",
+        "structured_output": {
+          "risks": [
+            {
+              "sku": "APP-000090",
+              "days": 2,
+              "shortage": 150,
+              "revenue_at_risk": 4291.0,
+              "urgency": "CRITICAL",
+              "vendor_name": "华东供应商A",
+              "vendor_phone": "13800000000",
+              "vendor_email": "a@vendor.com",
+              "lead_time_days": 5,
+              "actions": [
+                "Expedite vendor order",
+                "Consider temporary price increase",
+                "Review substitute SKUs"
+              ]
+            },
+            {
+              "sku": "APP-000203",
+              "days": 4,
+              "shortage": 80,
+              "revenue_at_risk": 1472.0,
+              "urgency": "HIGH",
+              "vendor_name": "华南供应商B",
+              "vendor_phone": "13900000000",
+              "vendor_email": "b@vendor.com",
+              "lead_time_days": 7,
+              "actions": [
+                "Expedite vendor order",
+                "Consider temporary price increase",
+                "Review substitute SKUs"
+              ]
+            }
+          ],
+          "summary": "Top risks: APP-000090 (2 days, $4291.0 risk), APP-000203 (4 days, $1472.0 risk)",
+          "vendors": [
+            {
+              "VendorID": "V001",
+              "vendor_name": "华东供应商A",
+              "phone": "13800000000"
+            },
+            {
+              "VendorID": "V002",
+              "vendor_name": "华南供应商B",
+              "phone": "13900000000"
+            }
+          ]
+        }
+      },
+      {
+        "agent_id": "replenishment_planner",
+        "label": "补货规划",
+        "status": "DONE",
+        "summary": "Generated replenishment plan using low stock items.",
+        "response_text": "[replenishment_planner] Prepared replenishment plan across 1 vendors. Top vendor 华东供应商A total $12800.0. Target safety stock 14 days.",
+        "started_at": "2026-02-14T14:12:02.914011+00:00",
+        "finished_at": "2026-02-14T14:12:02.914833+00:00",
+        "structured_output": {
+          "plan": {
+            "vendor_groups": [
+              {
+                "vendor_id": "V001",
+                "vendor_name": "华东供应商A",
+                "total_cost": 12800.0,
+                "items": [
+                  {
+                    "SKU": "APP-000090",
+                    "recommended_qty": 300,
+                    "line_cost": 12600.0,
+                    "expected_delivery_date": "2026-02-18"
+                  }
+                ]
+              }
+            ],
+            "total_cost": 12800.0,
+            "target_safety_days": 14
+          },
+          "summary": "Prepared replenishment plan across 1 vendors. Top vendor 华东供应商A total $12800.0. Target safety stock 14 days.",
+          "vendors": [
+            {
+              "VendorID": "V001",
+              "vendor_name": "华东供应商A",
+              "phone": "13800000000"
+            },
+            {
+              "VendorID": "V002",
+              "vendor_name": "华南供应商B",
+              "phone": "13900000000"
+            }
+          ]
+        }
+      },
+      {
+        "agent_id": "markdown_clearance_coach",
+        "label": "清仓教练",
+        "status": "DONE",
+        "summary": "Calculated markdown tiers based on days of supply.",
+        "response_text": "[markdown_clearance_coach] Markdown review: 2 items need markdown; 0 stockout risks, 0 healthy, 0 monitor.",
+        "started_at": "2026-02-14T14:12:02.915301+00:00",
+        "finished_at": "2026-02-14T14:12:02.915956+00:00",
+        "structured_output": {
+          "markdowns": [
+            {
+              "SKU": "APP-000635",
+              "recommended_markdown": 0.5,
+              "days_to_clear": 45,
+              "net_benefit": 980.0,
+              "status": "AGGRESSIVE_CLEARANCE"
+            },
+            {
+              "SKU": "APP-000450",
+              "recommended_markdown": 0.3,
+              "days_to_clear": 30,
+              "net_benefit": 420.0,
+              "status": "MARKDOWN_NOW"
+            }
+          ],
+          "items": [
+            {
+              "SKU": "APP-000635",
+              "recommended_markdown": 0.5,
+              "days_to_clear": 45,
+              "net_benefit": 980.0,
+              "status": "AGGRESSIVE_CLEARANCE"
+            },
+            {
+              "SKU": "APP-000450",
+              "recommended_markdown": 0.3,
+              "days_to_clear": 30,
+              "net_benefit": 420.0,
+              "status": "MARKDOWN_NOW"
+            }
+          ],
+          "status_counts": {
+            "AGGRESSIVE_CLEARANCE": 1,
+            "MARKDOWN_NOW": 1
+          },
+          "summary": "Markdown review: 2 items need markdown; 0 stockout risks, 0 healthy, 0 monitor."
+        }
+      }
+    ],
+    "member_tool_outputs": {
+      "exception_investigator": {
+        "count": 3,
+        "items": [
+          {
+            "SKU": "APP-000078",
+            "Category": "Home",
+            "SellingPrice": 99.0,
+            "UnitCost": 48.0,
+            "DailySalesVelocity": 0.1,
+            "LeadTimeDays": 10,
+            "ReorderPoint": 3,
+            "CurrentStock": 120
+          },
+          {
+            "SKU": "APP-000090",
+            "Category": "Home",
+            "SellingPrice": 79.0,
+            "UnitCost": 42.0,
+            "DailySalesVelocity": 18.0,
+            "LeadTimeDays": 6,
+            "ReorderPoint": 20,
+            "CurrentStock": 22
+          },
+          {
+            "SKU": "APP-000203",
+            "Category": "Beauty",
+            "SellingPrice": 39.0,
+            "UnitCost": 29.0,
+            "DailySalesVelocity": 12.0,
+            "LeadTimeDays": 8,
+            "ReorderPoint": 15,
+            "CurrentStock": 17
+          }
+        ]
+      },
+      "stockout_sentinel": {
+        "count": 2,
+        "items": [
+          {
+            "SKU": "APP-000090",
+            "VendorID": "V001",
+            "days_until_stockout": 2,
+            "shortage_amount": 150,
+            "revenue_at_risk": 4291.0,
+            "urgency_level": "CRITICAL",
+            "vendor_name": "华东供应商A",
+            "vendor_phone": "13800000000",
+            "vendor_email": "a@vendor.com",
+            "vendor_lead_time_days": 5
+          },
+          {
+            "SKU": "APP-000203",
+            "VendorID": "V002",
+            "days_until_stockout": 4,
+            "shortage_amount": 80,
+            "revenue_at_risk": 1472.0,
+            "urgency_level": "HIGH",
+            "vendor_name": "华南供应商B",
+            "vendor_phone": "13900000000",
+            "vendor_email": "b@vendor.com",
+            "vendor_lead_time_days": 7
+          }
+        ],
+        "vendor_contacts": {
+          "V001": {
+            "VendorID": "V001",
+            "vendor_name": "华东供应商A",
+            "phone": "13800000000"
+          },
+          "V002": {
+            "VendorID": "V002",
+            "vendor_name": "华南供应商B",
+            "phone": "13900000000"
+          }
+        }
+      },
+      "replenishment_planner": {
+        "vendor_groups": [
+          {
+            "vendor_id": "V001",
+            "vendor_name": "华东供应商A",
+            "total_cost": 12800.0,
+            "items": [
+              {
+                "SKU": "APP-000090",
+                "recommended_qty": 300,
+                "line_cost": 12600.0,
+                "expected_delivery_date": "2026-02-18"
+              }
+            ]
+          }
+        ],
+        "total_cost": 12800.0,
+        "target_safety_days": 14,
+        "vendors": [
+          {
+            "VendorID": "V001",
+            "vendor_name": "华东供应商A",
+            "phone": "13800000000"
+          },
+          {
+            "VendorID": "V002",
+            "vendor_name": "华南供应商B",
+            "phone": "13900000000"
+          }
+        ]
+      },
+      "markdown_clearance_coach": {
+        "count": 2,
+        "items": [
+          {
+            "SKU": "APP-000635",
+            "recommended_markdown": 0.5,
+            "days_to_clear": 45,
+            "net_benefit": 980.0,
+            "status": "AGGRESSIVE_CLEARANCE"
+          },
+          {
+            "SKU": "APP-000450",
+            "recommended_markdown": 0.3,
+            "days_to_clear": 30,
+            "net_benefit": 420.0,
+            "status": "MARKDOWN_NOW"
+          }
+        ]
+      }
+    },
+    "rag_corpus": [
+      {
+        "evidence_id": "ev-48d8a1548a70",
+        "run_id": "teamv1-96f989462f66",
+        "member_id": "exception_investigator",
+        "tool_name": "inventory_query",
+        "title_cn": "异常侦测-inventory_query-证据",
+        "content_text_cn": "成员结论：[exception_investigator] Detected 2 anomalies.\n工具输出摘要：{\"count\": 3, \"items\": [{\"SKU\": \"APP-000078\", \"Category\": \"Home\", \"SellingPrice\": 99.0, \"UnitCost\": 48.0, \"DailySalesVelocity\": 0.1, \"LeadTimeDays\": 10, \"ReorderPoint\": 3, \"CurrentStock\": 120}, {\"SKU\": \"APP-000090\", \"Category\": \"Home\", \"SellingPrice\": 79.0, \"UnitCost\": 42.0, \"DailySalesVelocity\": 18.0, \"LeadTimeDays\": 6, \"ReorderPoint\": 20, \"CurrentStock\": 22}, {\"SKU\": \"APP-000203\", \"Category\": \"Beauty\", \"SellingPrice\": 39.0, \"UnitCost\": 29.0, \"DailySalesVelocity\": 12.0, \"LeadTimeDays\": 8, \"ReorderPoint\": 15, \"CurrentStock\": 17}]}",
+        "raw_json": {
+          "count": 3,
+          "items": [
+            {
+              "SKU": "APP-000078",
+              "Category": "Home",
+              "SellingPrice": 99.0,
+              "UnitCost": 48.0,
+              "DailySalesVelocity": 0.1,
+              "LeadTimeDays": 10,
+              "ReorderPoint": 3,
+              "CurrentStock": 120
+            },
+            {
+              "SKU": "APP-000090",
+              "Category": "Home",
+              "SellingPrice": 79.0,
+              "UnitCost": 42.0,
+              "DailySalesVelocity": 18.0,
+              "LeadTimeDays": 6,
+              "ReorderPoint": 20,
+              "CurrentStock": 22
+            },
+            {
+              "SKU": "APP-000203",
+              "Category": "Beauty",
+              "SellingPrice": 39.0,
+              "UnitCost": 29.0,
+              "DailySalesVelocity": 12.0,
+              "LeadTimeDays": 8,
+              "ReorderPoint": 15,
+              "CurrentStock": 17
+            }
+          ]
+        },
+        "created_at": "2026-02-14T14:12:02.910799+00:00"
+      },
+      {
+        "evidence_id": "ev-32f0d47924c5",
+        "run_id": "teamv1-96f989462f66",
+        "member_id": "stockout_sentinel",
+        "tool_name": "inventory_query",
+        "title_cn": "缺货哨兵-inventory_query-证据",
+        "content_text_cn": "成员结论：[stockout_sentinel] Top risks: APP-000090 (2 days, $4291.0 risk), APP-000203 (4 days, $1472.0 risk)\n工具输出摘要：{\"count\": 2, \"items\": [{\"SKU\": \"APP-000090\", \"VendorID\": \"V001\", \"days_until_stockout\": 2, \"shortage_amount\": 150, \"revenue_at_risk\": 4291.0, \"urgency_level\": \"CRITICAL\", \"vendor_name\": \"华东供应商A\", \"vendor_phone\": \"13800000000\", \"vendor_email\": \"a@vendor.com\", \"vendor_lead_time_days\": 5}, {\"SKU\": \"APP-000203\", \"VendorID\": \"V002\", \"days_until_stockout\": 4, \"shortage_amount\": 80, \"revenue_at_risk\": 1472.0, \"urgency_level\": \"HIGH\", \"vendor_name\": \"华南供应商B\", \"vendor_phone\": \"13900000000\", \"vendor_email\": \"b@vendor.com\", \"vendor_lead_time_days\": 7}], \"vendor_contacts\": {\"V001\": {\"VendorID\": \"V001\", \"vendor_name\": \"华东供应商A\", \"phone\": \"13800000000\"}, \"V002\": {\"VendorID\": \"V002\", \"vendor_name\": \"华南供应商B\", \"phone\": \"13900000000\"}}}",
+        "raw_json": {
+          "count": 2,
+          "items": [
+            {
+              "SKU": "APP-000090",
+              "VendorID": "V001",
+              "days_until_stockout": 2,
+              "shortage_amount": 150,
+              "revenue_at_risk": 4291.0,
+              "urgency_level": "CRITICAL",
+              "vendor_name": "华东供应商A",
+              "vendor_phone": "13800000000",
+              "vendor_email": "a@vendor.com",
+              "vendor_lead_time_days": 5
+            },
+            {
+              "SKU": "APP-000203",
+              "VendorID": "V002",
+              "days_until_stockout": 4,
+              "shortage_amount": 80,
+              "revenue_at_risk": 1472.0,
+              "urgency_level": "HIGH",
+              "vendor_name": "华南供应商B",
+              "vendor_phone": "13900000000",
+              "vendor_email": "b@vendor.com",
+              "vendor_lead_time_days": 7
+            }
+          ],
+          "vendor_contacts": {
+            "V001": {
+              "VendorID": "V001",
+              "vendor_name": "华东供应商A",
+              "phone": "13800000000"
+            },
+            "V002": {
+              "VendorID": "V002",
+              "vendor_name": "华南供应商B",
+              "phone": "13900000000"
+            }
+          }
+        },
+        "created_at": "2026-02-14T14:12:02.912900+00:00"
+      },
+      {
+        "evidence_id": "ev-3daebcf40a9f",
+        "run_id": "teamv1-96f989462f66",
+        "member_id": "stockout_sentinel",
+        "tool_name": "inventory_vendor_info",
+        "title_cn": "缺货哨兵-inventory_vendor_info-证据",
+        "content_text_cn": "成员结论：[stockout_sentinel] Top risks: APP-000090 (2 days, $4291.0 risk), APP-000203 (4 days, $1472.0 risk)\n工具输出摘要：{\"count\": 2, \"items\": [{\"SKU\": \"APP-000090\", \"VendorID\": \"V001\", \"days_until_stockout\": 2, \"shortage_amount\": 150, \"revenue_at_risk\": 4291.0, \"urgency_level\": \"CRITICAL\", \"vendor_name\": \"华东供应商A\", \"vendor_phone\": \"13800000000\", \"vendor_email\": \"a@vendor.com\", \"vendor_lead_time_days\": 5}, {\"SKU\": \"APP-000203\", \"VendorID\": \"V002\", \"days_until_stockout\": 4, \"shortage_amount\": 80, \"revenue_at_risk\": 1472.0, \"urgency_level\": \"HIGH\", \"vendor_name\": \"华南供应商B\", \"vendor_phone\": \"13900000000\", \"vendor_email\": \"b@vendor.com\", \"vendor_lead_time_days\": 7}], \"vendor_contacts\": {\"V001\": {\"VendorID\": \"V001\", \"vendor_name\": \"华东供应商A\", \"phone\": \"13800000000\"}, \"V002\": {\"VendorID\": \"V002\", \"vendor_name\": \"华南供应商B\", \"phone\": \"13900000000\"}}}",
+        "raw_json": {
+          "count": 2,
+          "items": [
+            {
+              "SKU": "APP-000090",
+              "VendorID": "V001",
+              "days_until_stockout": 2,
+              "shortage_amount": 150,
+              "revenue_at_risk": 4291.0,
+              "urgency_level": "CRITICAL",
+              "vendor_name": "华东供应商A",
+              "vendor_phone": "13800000000",
+              "vendor_email": "a@vendor.com",
+              "vendor_lead_time_days": 5
+            },
+            {
+              "SKU": "APP-000203",
+              "VendorID": "V002",
+              "days_until_stockout": 4,
+              "shortage_amount": 80,
+              "revenue_at_risk": 1472.0,
+              "urgency_level": "HIGH",
+              "vendor_name": "华南供应商B",
+              "vendor_phone": "13900000000",
+              "vendor_email": "b@vendor.com",
+              "vendor_lead_time_days": 7
+            }
+          ],
+          "vendor_contacts": {
+            "V001": {
+              "VendorID": "V001",
+              "vendor_name": "华东供应商A",
+              "phone": "13800000000"
+            },
+            "V002": {
+              "VendorID": "V002",
+              "vendor_name": "华南供应商B",
+              "phone": "13900000000"
+            }
+          }
+        },
+        "created_at": "2026-02-14T14:12:02.913165+00:00"
+      },
+      {
+        "evidence_id": "ev-81a0a54a8c5b",
+        "run_id": "teamv1-96f989462f66",
+        "member_id": "replenishment_planner",
+        "tool_name": "inventory_replenishment",
+        "title_cn": "补货规划-inventory_replenishment-证据",
+        "content_text_cn": "成员结论：[replenishment_planner] Prepared replenishment plan across 1 vendors. Top vendor 华东供应商A total $12800.0. Target safety stock 14 days.\n工具输出摘要：{\"vendor_groups\": [{\"vendor_id\": \"V001\", \"vendor_name\": \"华东供应商A\", \"total_cost\": 12800.0, \"items\": [{\"SKU\": \"APP-000090\", \"recommended_qty\": 300, \"line_cost\": 12600.0, \"expected_delivery_date\": \"2026-02-18\"}]}], \"total_cost\": 12800.0, \"target_safety_days\": 14, \"vendors\": [{\"VendorID\": \"V001\", \"vendor_name\": \"华东供应商A\", \"phone\": \"13800000000\"}, {\"VendorID\": \"V002\", \"vendor_name\": \"华南供应商B\", \"phone\": \"13900000000\"}]}",
+        "raw_json": {
+          "vendor_groups": [
+            {
+              "vendor_id": "V001",
+              "vendor_name": "华东供应商A",
+              "total_cost": 12800.0,
+              "items": [
+                {
+                  "SKU": "APP-000090",
+                  "recommended_qty": 300,
+                  "line_cost": 12600.0,
+                  "expected_delivery_date": "2026-02-18"
+                }
+              ]
+            }
+          ],
+          "total_cost": 12800.0,
+          "target_safety_days": 14,
+          "vendors": [
+            {
+              "VendorID": "V001",
+              "vendor_name": "华东供应商A",
+              "phone": "13800000000"
+            },
+            {
+              "VendorID": "V002",
+              "vendor_name": "华南供应商B",
+              "phone": "13900000000"
+            }
+          ]
+        },
+        "created_at": "2026-02-14T14:12:02.914479+00:00"
+      },
+      {
+        "evidence_id": "ev-3085ee372d29",
+        "run_id": "teamv1-96f989462f66",
+        "member_id": "replenishment_planner",
+        "tool_name": "inventory_vendor_info",
+        "title_cn": "补货规划-inventory_vendor_info-证据",
+        "content_text_cn": "成员结论：[replenishment_planner] Prepared replenishment plan across 1 vendors. Top vendor 华东供应商A total $12800.0. Target safety stock 14 days.\n工具输出摘要：{\"vendor_groups\": [{\"vendor_id\": \"V001\", \"vendor_name\": \"华东供应商A\", \"total_cost\": 12800.0, \"items\": [{\"SKU\": \"APP-000090\", \"recommended_qty\": 300, \"line_cost\": 12600.0, \"expected_delivery_date\": \"2026-02-18\"}]}], \"total_cost\": 12800.0, \"target_safety_days\": 14, \"vendors\": [{\"VendorID\": \"V001\", \"vendor_name\": \"华东供应商A\", \"phone\": \"13800000000\"}, {\"VendorID\": \"V002\", \"vendor_name\": \"华南供应商B\", \"phone\": \"13900000000\"}]}",
+        "raw_json": {
+          "vendor_groups": [
+            {
+              "vendor_id": "V001",
+              "vendor_name": "华东供应商A",
+              "total_cost": 12800.0,
+              "items": [
+                {
+                  "SKU": "APP-000090",
+                  "recommended_qty": 300,
+                  "line_cost": 12600.0,
+                  "expected_delivery_date": "2026-02-18"
+                }
+              ]
+            }
+          ],
+          "total_cost": 12800.0,
+          "target_safety_days": 14,
+          "vendors": [
+            {
+              "VendorID": "V001",
+              "vendor_name": "华东供应商A",
+              "phone": "13800000000"
+            },
+            {
+              "VendorID": "V002",
+              "vendor_name": "华南供应商B",
+              "phone": "13900000000"
+            }
+          ]
+        },
+        "created_at": "2026-02-14T14:12:02.914674+00:00"
+      },
+      {
+        "evidence_id": "ev-0c70730f1e52",
+        "run_id": "teamv1-96f989462f66",
+        "member_id": "markdown_clearance_coach",
+        "tool_name": "inventory_markdown",
+        "title_cn": "清仓教练-inventory_markdown-证据",
+        "content_text_cn": "成员结论：[markdown_clearance_coach] Markdown review: 2 items need markdown; 0 stockout risks, 0 healthy, 0 monitor.\n工具输出摘要：{\"count\": 2, \"items\": [{\"SKU\": \"APP-000635\", \"recommended_markdown\": 0.5, \"days_to_clear\": 45, \"net_benefit\": 980.0, \"status\": \"AGGRESSIVE_CLEARANCE\"}, {\"SKU\": \"APP-000450\", \"recommended_markdown\": 0.3, \"days_to_clear\": 30, \"net_benefit\": 420.0, \"status\": \"MARKDOWN_NOW\"}]}",
+        "raw_json": {
+          "count": 2,
+          "items": [
+            {
+              "SKU": "APP-000635",
+              "recommended_markdown": 0.5,
+              "days_to_clear": 45,
+              "net_benefit": 980.0,
+              "status": "AGGRESSIVE_CLEARANCE"
+            },
+            {
+              "SKU": "APP-000450",
+              "recommended_markdown": 0.3,
+              "days_to_clear": 30,
+              "net_benefit": 420.0,
+              "status": "MARKDOWN_NOW"
+            }
+          ]
+        },
+        "created_at": "2026-02-14T14:12:02.915840+00:00"
+      }
+    ],
+    "rag_retrieval_trace": [
+      {
+        "member_id": "exception_investigator",
+        "query": "检索异常检测相关证据，优先关注价格、销量、库存口径异常。目标：请执行一次固定巡检并输出综合建议。关键词：exception_investigator",
+        "hits": []
+      },
+      {
+        "member_id": "stockout_sentinel",
+        "query": "检索缺货风险相关证据，优先关注缺货天数、风险金额与供应商信息。目标：请执行一次固定巡检并输出综合建议。关键词：exception_investigator、stockout_sentinel",
+        "hits": [
+          {
+            "score": 5.0,
+            "evidence_id": "ev-48d8a1548a70",
+            "member_id": "exception_investigator",
+            "tool_name": "inventory_query",
+            "title_cn": "异常侦测-inventory_query-证据",
+            "content_excerpt": "成员结论：[exception_investigator] Detected 2 anomalies.\n工具输出摘要：{\"count\": 3, \"items\": [{\"SKU\": \"APP-000078\", \"Category\": \"Home\", \"SellingPrice\": 99.0, \"UnitCost\": 48.0, \"DailySalesVelocity\": 0.1, \"LeadTimeDays\": 10, \"ReorderPoint\": 3, \"CurrentStock\": 120}, {\"SKU\": \"APP-000090\", \"Category\": \"Home\", \"Selli",
+            "created_at": "2026-02-14T14:12:02.910799+00:00"
+          }
+        ]
+      },
+      {
+        "member_id": "replenishment_planner",
+        "query": "检索补货计划相关证据，优先关注风险SKU与供应商交期约束。目标：请执行一次固定巡检并输出综合建议。关键词：exception_investigator、stockout_sentinel、replenishment_planner",
+        "hits": [
+          {
+            "score": 24.0275,
+            "evidence_id": "ev-32f0d47924c5",
+            "member_id": "stockout_sentinel",
+            "tool_name": "inventory_query",
+            "title_cn": "缺货哨兵-inventory_query-证据",
+            "content_excerpt": "成员结论：[stockout_sentinel] Top risks: APP-000090 (2 days, $4291.0 risk), APP-000203 (4 days, $1472.0 risk)\n工具输出摘要：{\"count\": 2, \"items\": [{\"SKU\": \"APP-000090\", \"VendorID\": \"V001\", \"days_until_stockout\": 2, \"shortage_amount\": 150, \"revenue_at_risk\": 4291.0, \"urgency_level\": \"CRITICAL\", \"vendor_name\": \"华",
+            "created_at": "2026-02-14T14:12:02.912900+00:00"
+          },
+          {
+            "score": 24.0275,
+            "evidence_id": "ev-3daebcf40a9f",
+            "member_id": "stockout_sentinel",
+            "tool_name": "inventory_vendor_info",
+            "title_cn": "缺货哨兵-inventory_vendor_info-证据",
+            "content_excerpt": "成员结论：[stockout_sentinel] Top risks: APP-000090 (2 days, $4291.0 risk), APP-000203 (4 days, $1472.0 risk)\n工具输出摘要：{\"count\": 2, \"items\": [{\"SKU\": \"APP-000090\", \"VendorID\": \"V001\", \"days_until_stockout\": 2, \"shortage_amount\": 150, \"revenue_at_risk\": 4291.0, \"urgency_level\": \"CRITICAL\", \"vendor_name\": \"华",
+            "created_at": "2026-02-14T14:12:02.913165+00:00"
+          },
+          {
+            "score": 8.6931,
+            "evidence_id": "ev-48d8a1548a70",
+            "member_id": "exception_investigator",
+            "tool_name": "inventory_query",
+            "title_cn": "异常侦测-inventory_query-证据",
+            "content_excerpt": "成员结论：[exception_investigator] Detected 2 anomalies.\n工具输出摘要：{\"count\": 3, \"items\": [{\"SKU\": \"APP-000078\", \"Category\": \"Home\", \"SellingPrice\": 99.0, \"UnitCost\": 48.0, \"DailySalesVelocity\": 0.1, \"LeadTimeDays\": 10, \"ReorderPoint\": 3, \"CurrentStock\": 120}, {\"SKU\": \"APP-000090\", \"Category\": \"Home\", \"Selli",
+            "created_at": "2026-02-14T14:12:02.910799+00:00"
+          }
+        ]
+      },
+      {
+        "member_id": "markdown_clearance_coach",
+        "query": "检索清仓相关证据，优先关注滞销SKU与库存周转周期。目标：请执行一次固定巡检并输出综合建议。关键词：exception_investigator、stockout_sentinel、replenishment_planner、markdown_clearance_coach",
+        "hits": [
+          {
+            "score": 9.0986,
+            "evidence_id": "ev-48d8a1548a70",
+            "member_id": "exception_investigator",
+            "tool_name": "inventory_query",
+            "title_cn": "异常侦测-inventory_query-证据",
+            "content_excerpt": "成员结论：[exception_investigator] Detected 2 anomalies.\n工具输出摘要：{\"count\": 3, \"items\": [{\"SKU\": \"APP-000078\", \"Category\": \"Home\", \"SellingPrice\": 99.0, \"UnitCost\": 48.0, \"DailySalesVelocity\": 0.1, \"LeadTimeDays\": 10, \"ReorderPoint\": 3, \"CurrentStock\": 120}, {\"SKU\": \"APP-000090\", \"Category\": \"Home\", \"Selli",
+            "created_at": "2026-02-14T14:12:02.910799+00:00"
+          },
+          {
+            "score": 7.6931,
+            "evidence_id": "ev-32f0d47924c5",
+            "member_id": "stockout_sentinel",
+            "tool_name": "inventory_query",
+            "title_cn": "缺货哨兵-inventory_query-证据",
+            "content_excerpt": "成员结论：[stockout_sentinel] Top risks: APP-000090 (2 days, $4291.0 risk), APP-000203 (4 days, $1472.0 risk)\n工具输出摘要：{\"count\": 2, \"items\": [{\"SKU\": \"APP-000090\", \"VendorID\": \"V001\", \"days_until_stockout\": 2, \"shortage_amount\": 150, \"revenue_at_risk\": 4291.0, \"urgency_level\": \"CRITICAL\", \"vendor_name\": \"华",
+            "created_at": "2026-02-14T14:12:02.912900+00:00"
+          },
+          {
+            "score": 7.6931,
+            "evidence_id": "ev-3daebcf40a9f",
+            "member_id": "stockout_sentinel",
+            "tool_name": "inventory_vendor_info",
+            "title_cn": "缺货哨兵-inventory_vendor_info-证据",
+            "content_excerpt": "成员结论：[stockout_sentinel] Top risks: APP-000090 (2 days, $4291.0 risk), APP-000203 (4 days, $1472.0 risk)\n工具输出摘要：{\"count\": 2, \"items\": [{\"SKU\": \"APP-000090\", \"VendorID\": \"V001\", \"days_until_stockout\": 2, \"shortage_amount\": 150, \"revenue_at_risk\": 4291.0, \"urgency_level\": \"CRITICAL\", \"vendor_name\": \"华",
+            "created_at": "2026-02-14T14:12:02.913165+00:00"
+          },
+          {
+            "score": 6.6931,
+            "evidence_id": "ev-81a0a54a8c5b",
+            "member_id": "replenishment_planner",
+            "tool_name": "inventory_replenishment",
+            "title_cn": "补货规划-inventory_replenishment-证据",
+            "content_excerpt": "成员结论：[replenishment_planner] Prepared replenishment plan across 1 vendors. Top vendor 华东供应商A total $12800.0. Target safety stock 14 days.\n工具输出摘要：{\"vendor_groups\": [{\"vendor_id\": \"V001\", \"vendor_name\": \"华东供应商A\", \"total_cost\": 12800.0, \"items\": [{\"SKU\": \"APP-000090\", \"recommended_qty\": 300, \"line_cost",
+            "created_at": "2026-02-14T14:12:02.914479+00:00"
+          },
+          {
+            "score": 6.6931,
+            "evidence_id": "ev-3085ee372d29",
+            "member_id": "replenishment_planner",
+            "tool_name": "inventory_vendor_info",
+            "title_cn": "补货规划-inventory_vendor_info-证据",
+            "content_excerpt": "成员结论：[replenishment_planner] Prepared replenishment plan across 1 vendors. Top vendor 华东供应商A total $12800.0. Target safety stock 14 days.\n工具输出摘要：{\"vendor_groups\": [{\"vendor_id\": \"V001\", \"vendor_name\": \"华东供应商A\", \"total_cost\": 12800.0, \"items\": [{\"SKU\": \"APP-000090\", \"recommended_qty\": 300, \"line_cost",
+            "created_at": "2026-02-14T14:12:02.914674+00:00"
+          }
+        ]
+      }
+    ]
+  }
+}

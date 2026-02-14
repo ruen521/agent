@@ -1,0 +1,6 @@
+{
+  "stockout_sentinel": "Ensure inventory snapshot accuracy for future analysis.",
+  "exception_investigator": "Refine anomaly detection algorithms for better precision.",
+  "replenishment_planner": "Validate replenishment plan against vendor constraints.",
+  "markdown_clearance_coach": "Review markdown suggestions for alignment with sales strategy."
+}

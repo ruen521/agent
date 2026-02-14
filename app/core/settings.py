@@ -3,7 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    qingyun_api_url: str = "https://api.qingyuntop.top"
+    qingyun_api_url: str = "https://api.qingyuntop.top/v1"
     qingyun_api_key: str = ""
     qingyun_model: str = "gpt-4o"
     daily_holding_cost_pct: float = 0.0007  # ~25% 年化
@@ -49,6 +49,22 @@ class Settings(BaseSettings):
     db_strict: bool = True
     alert_error_rate: float = 0.2
     alert_min_requests: int = 50
+    alert_llm_error_rate: float = 0.3
+    alert_llm_min_requests: int = 20
+    alert_webhook_url: str = ""
+    alert_cooldown_seconds: int = 300
+
+    session_store_path: str = "data/session_memory.json"
+    session_max_messages: int = 20
+
+    agent_lifecycle_path: str = "data/agent_lifecycle.json"
+    agent_default_alias: str = "prod"
+    planner_max_steps: int = 6
+    planner_max_replans: int = 4
+    strict_error_mode: bool = True
+    report_dispatch_mode: str = "subprocess"
+    report_worker_python: str = ""
+    report_pdf_timeout_seconds: int = 120
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 

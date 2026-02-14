@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <title>{{ title }}</title>
+</head>
+<body>
+  <h1>{{ title }}</h1>
+  <div class="meta">导出时间：{{ generated_at }} ｜ 导出类型：{{ audience }} ｜ 表格：{{ table_name }}</div>
+
+  <h2>筛选条件</h2>
+  <div class="card">
+    {% if filters %}
+    <table>
+      <tbody>
+        {% for key, value in filters.items() %}
+        <tr>
+          <th>{{ key }}</th>
+          <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="muted">无筛选条件</p>
+    {% endif %}
+  </div>
+
+  <h2>数据明细（{{ rows|length }} 条）</h2>
+  <div class="card">
+    {% if rows %}
+    {% set columns = rows[0].keys() %}
+    <table>
+      <thead>
+        <tr>
+          {% for col in columns %}
+          <th>{{ col }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+        <tr>
+          {% for col in columns %}
+          <td>{{ row.get(col, "") }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="muted">无可导出数据</p>
+    {% endif %}
+  </div>
+</body>
+</html>
+

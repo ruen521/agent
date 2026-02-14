@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from app.core.settings import settings
 from app.data.repository import load_data
 from app.tools.inventory_tools import (
     inventory_markdown_calculator,
@@ -11,6 +12,8 @@ from app.tools.stats import stats_calculator
 
 
 def setup_module() -> None:
+    settings.database_url = ""
+    settings.db_strict = False
     load_data()
 
 
@@ -41,6 +44,13 @@ def test_inventory_markdown_calculator() -> None:
     item = result["items"][0]
     assert "recommended_markdown" in item
     assert "days_to_clear" in item
+
+
+def test_inventory_markdown_multiplier_tiers() -> None:
+    result = inventory_markdown_calculator(sku="HOL-CTREE-6FT", min_age_days=0)
+    item = result["items"][0]
+    assert item["recommended_markdown"] == 0.0
+    assert item["expected_velocity_multiplier"] == 1.0
 
 
 def test_stats_calculator() -> None:

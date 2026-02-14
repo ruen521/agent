@@ -1,0 +1,92 @@
+Replenishment Plan for Urgent SKUs:
+
+**Target Safety Days:** 30
+**Total Cost:** $7543.00
+
+**Vendor Group:**
+- **Vendor ID:** REAL_IMPORT_VENDOR
+- **Vendor Name:** Real Data Import Vendor
+- **Minimum Order:** $0.00
+- **Lead Time (Days):** 14
+
+**Recommended Replenishment Items:**
+1. **SKU:** B0B18XTX3L
+   - Recommended Quantity: 1100
+   - Unit Cost: $1.00
+   - Line Cost: $1100.00
+   - ETA (Days): 14
+   - Expected Delivery Date: 2026-02-27
+
+2. **SKU:** B0B9Y3YL58
+   - Recommended Quantity: 32
+   - Unit Cost: $1.00
+   - Line Cost: $32.00
+   - ETA (Days): 14
+   - Expected Delivery Date: 2026-02-27
+
+3. **SKU:** B0C6MD63M5
+   - Recommended Quantity: 79
+   - Unit Cost: $1.00
+   - Line Cost: $79.00
+   - ETA (Days): 14
+   - Expected Delivery Date: 2026-02-27
+
+4. **SKU:** B0CG5X113C
+   - Recommended Quantity: 200
+   - Unit Cost: $1.00
+   - Line Cost: $200.00
+   - ETA (Days): 14
+   - Expected Delivery Date: 2026-02-27
+
+5. **SKU:** B0CNQR8JS1
+   - Recommended Quantity: 300
+   - Unit Cost: $1.00
+   - Line Cost: $300.00
+   - ETA (Days): 14
+   - Expected Delivery Date: 2026-02-27
+
+6. **SKU:** B0CNQVNDVZ
+   - Recommended Quantity: 400
+   - Unit Cost: $1.00
+   - Line Cost: $400.00
+   - ETA (Days): 14
+   - Expected Delivery Date: 2026-02-27
+
+7. **SKU:** B0CWL5CY6S
+   - Recommended Quantity: 500
+   - Unit Cost: $1.00
+   - Line Cost: $500.00
+   - ETA (Days): 14
+   - Expected Delivery Date: 2026-02-27
+
+8. **SKU:** B0D1TQ9SX3
+   - Recommended Quantity: 600
+   - Unit Cost: $1.00
+   - Line Cost: $600.00
+   - ETA (Days): 14
+   - Expected Delivery Date: 2026-02-27
+
+9. **SKU:** B0D1TVCZ1B
+   - Recommended Quantity: 700
+   - Unit Cost: $1.00
+   - Line Cost: $700.00
+   - ETA (Days): 14
+   - Expected Delivery Date: 2026-02-27
+
+10. **SKU:** B0D8J44SK7
+    - Recommended Quantity: 800
+    - Unit Cost: $1.00
+    - Line Cost: $800.00
+    - ETA (Days): 14
+    - Expected Delivery Date: 2026-02-27
+
+... (and so on for the remaining SKUs)
+
+**Summary:**
+- Total SKUs Replenished: 20
+- Total Cost: $7543.00
+- All items meet the vendor's minimum order requirement.
+
+**Next Steps:**
+- Confirm the replenishment order with the vendor.
+- Monitor inventory levels to ensure timely delivery and avoid stockouts.

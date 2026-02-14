@@ -1,0 +1,6 @@
+{
+  "stockout_sentinel": "Identified stockout risks and urgent SKUs.",
+  "exception_investigator": "Detected inventory exception anomalies.",
+  "replenishment_planner": "Created replenishment plan based on stockout risks.",
+  "markdown_clearance_coach": "Generated markdown clearance plan based on exception anomalies."
+}

@@ -1,61 +1,85 @@
-# API Reference (M1)
+# API Reference
 
 Base URL: `http://localhost:8000`
 
 Authentication:
-- `X-API-Key: <API_KEY>` or `Authorization: Bearer <API_KEY>` if `API_KEY` is set.
+- `X-API-Key: <API_KEY>`
+- or `Authorization: Bearer <API_KEY>` (if enabled)
 
 ## GET /agents/list
-Returns the list of available agents.
-
-Response:
-- `agents`: array of agent metadata.
+返回可用智能体列表与生命周期状态。
 
 ## GET /agents/stats
-Returns real-time inventory statistics.
-
-Response:
-- `total_skus`
-- `stockout_risks`
-- `critical_risks`
-- `low_stock_items`
-- `total_categories`
-- `categories`
-- `request_id`
-- `timestamp`
+返回库存统计指标。
 
 ## POST /agents/invoke
-Invoke a specific agent.
+同步调用智能体。
 
 Request body:
-- `agent`: agent id
-- `input`: user prompt
-- `session_id`: optional
-- `parameters`: optional tool call
+- `agent`: 智能体 ID（支持别名）
+- `input`: 用户输入
+- `session_id`: 可选
+- `parameters`: 可选
 
-Tool call format:
+`inventory_copilot` 协同参数示例：
+
 ```json
 {
-  "tool": "inventory_query",
-  "args": {"query_type": "stockout_risk"}
+  "mode": "team",
+  "orchestration": {
+    "member_allowlist": ["stockout_sentinel"],
+    "member_denylist": ["markdown_clearance_coach"]
+  }
 }
 ```
 
-Response:
-- `success`
+说明：
+- `mode` 支持 `planner` 与 `team`。
+- 输入 `mode=team_v2` 仍被接受，但会映射到 `team`。
+- `mode=team` 仅走 Team V1。
+
+Response（核心字段）：
 - `response.text`
 - `response.reasoning`
 - `response.structured_output`
 - `response.tool_output`
-- `session_id`
-- `timestamp`
-- `request_id`
-- `model`
+- `collab_mode`
+
+Team V1 `structured_output`：
+- `team_version`: `v1`
+- `status`: `team_v1_completed | team_v1_partial | team_v1_failed`
+- `team_plan`
+- `team_execution`
+- `team_summary`
+- `rag_summary`
+
+Team V1 `tool_output`：
+- `workflow_results`
+- `member_tool_outputs`
+- `rag_corpus`
+- `rag_retrieval_trace`
+
+## POST /agents/invoke_stream
+流式调用智能体（SSE）。
+
+Team V1 关键节点事件：
+- `copilot_team_v1_plan`
+- `copilot_team_v1_execute`
+- `copilot_team_v1_aggregate`
+
+## POST /reports/exports
+创建异步导出任务（`pdf` / `xlsx`）。
+
+`analysis` 导出在 Team V1 下会包含全量协同数据（含 RAG 证据与检索轨迹）。
+
+## GET /reports/exports/{job_id}
+查询导出任务状态。
+
+## GET /reports/exports/{job_id}/download
+下载导出文件。
 
 ## GET /health
-Health check.
+服务健康检查。
 
-Response:
-- `status`
-- `data_loaded`
-- `timestamp`
+## GET /metrics
+Prometheus 文本指标。

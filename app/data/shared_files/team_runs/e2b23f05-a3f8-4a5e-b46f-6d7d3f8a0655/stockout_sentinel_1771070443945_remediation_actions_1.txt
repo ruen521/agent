@@ -1,0 +1,6 @@
+{
+  "stockout_sentinel": "Ensure data saving issues are resolved for future runs.",
+  "exception_investigator": "No immediate actions required.",
+  "replenishment_planner": "Monitor stockout risks for any updates.",
+  "markdown_clearance_coach": "Validate markdown suggestions with sales data."
+}

@@ -59,7 +59,12 @@ def inventory_query_tool(
     vendors = _vendor_map()
 
     # 直接从数据库层获取过滤后的数据
-    items = get_inventory_items(query_type, category, sku, limit)
+    items = get_inventory_items(
+        query_type=query_type,
+        category=category,
+        sku=sku,
+        limit=limit,
+    )
 
     if min_velocity is not None:
         items = [i for i in items if float(i.get("DailySalesVelocity", 0) or 0) >= float(min_velocity)]
@@ -233,15 +238,15 @@ def inventory_markdown_calculator(
         elif days_supply < 60:
             status = "PROMOTIONAL"
             markdown = 0.1
-            multiplier = 2.0
+            multiplier = 1.5
         elif days_supply < 90:
             status = "LIGHT_CLEARANCE"
             markdown = 0.2
-            multiplier = 2.5
+            multiplier = 2.0
         elif days_supply < 180:
             status = "STANDARD_CLEARANCE"
             markdown = 0.3
-            multiplier = 3.0
+            multiplier = 2.5
         else:
             status = "AGGRESSIVE_CLEARANCE"
             markdown = 0.5
@@ -251,12 +256,14 @@ def inventory_markdown_calculator(
         days_to_clear = float("inf") if expected_velocity == 0 else round(
             item["CurrentStock"] / expected_velocity, 2
         )
-        selling_price = float(item.get("SellingPrice", item.get("UnitCost", 0)))
-        revenue_at_markdown = round(item.get("CurrentStock", 0) * selling_price * (1 - markdown), 2)
+        unit_cost = float(item.get("UnitCost", 0))
+        selling_price = float(item.get("SellingPrice", unit_cost))
+        revenue_at_markdown = round(item.get("CurrentStock", 0) * unit_cost * (1 - markdown), 2)
         holding_pct = float(item.get("HoldingCostPct", settings.daily_holding_cost_pct))
-        holding_cost_avoided = 0.0 if math.isinf(days_supply) else round(days_supply * holding_pct * selling_price, 2)
+        daily_holding_cost = unit_cost * holding_pct
+        holding_cost_avoided = 0.0 if math.isinf(days_supply) else round(days_supply * daily_holding_cost, 2)
         net_benefit = round(
-            revenue_at_markdown + holding_cost_avoided - (item.get("CurrentStock", 0) * float(item.get("UnitCost", 0))),
+            revenue_at_markdown + holding_cost_avoided - (item.get("CurrentStock", 0) * unit_cost),
             2,
         )
 

@@ -9,7 +9,8 @@ from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import JSONResponse, Response
 
-from app.core.context import agent_ctx, request_id_ctx, trace_id_ctx
+from app.core.alerts import alerts
+from app.core.context import agent_ctx, request_id_ctx, session_id_ctx, trace_id_ctx
 from app.core.metrics import metrics
 from app.core.settings import settings
 
@@ -40,11 +41,9 @@ class ApiKeyMiddleware(BaseHTTPMiddleware):
                     status_code=401,
                     content={
                         "success": False,
-                        "error": {
-                            "code": "UNAUTHORIZED",
-                            "message": "Invalid API key",
-                            "request_id": getattr(request.state, "request_id", ""),
-                        },
+                        "error_code": "UNAUTHORIZED",
+                        "error_message": "Invalid API key",
+                        "request_id": getattr(request.state, "request_id", ""),
                     },
                 )
         return await call_next(request)
@@ -69,11 +68,9 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
                     status_code=429,
                     content={
                         "success": False,
-                        "error": {
-                            "code": "RATE_LIMITED",
-                            "message": "Too many requests",
-                            "request_id": getattr(request.state, "request_id", ""),
-                        },
+                        "error_code": "RATE_LIMITED",
+                        "error_message": "Too many requests",
+                        "request_id": getattr(request.state, "request_id", ""),
                     },
                 )
             bucket.append(now)
@@ -98,12 +95,19 @@ class LoggingMiddleware(BaseHTTPMiddleware):
             raise
         finally:
             agent_ctx.set(None)
+            session_id_ctx.set(None)
 
         duration = (time.perf_counter() - start) * 1000
         metrics.observe_request(response.status_code, round(duration, 2))
         if metrics.error_rate_exceeded(
             threshold=settings.alert_error_rate, min_requests=settings.alert_min_requests
         ):
+            error_rate, sample_size = metrics.current_error_rate()
+            alerts.send_error_rate_alert(
+                error_rate=error_rate,
+                threshold=settings.alert_error_rate,
+                sample_size=sample_size,
+            )
             request.app.logger.error(
                 "alert_error_rate_high",
                 extra={

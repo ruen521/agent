@@ -48,6 +48,10 @@ def _get_mysql_repo():
     return _repo
 
 
+def get_mysql_repository():
+    return _get_mysql_repo()
+
+
 def load_data() -> None:
     repo = _get_mysql_repo()
     if repo:
@@ -63,11 +67,20 @@ def get_inventory_items(
     query_type: str = "all",
     category: str | None = None,
     sku: str | None = None,
+    skus: list[str] | None = None,
+    vendor_id: str | None = None,
     limit: int | None = None,
 ) -> list[dict[str, Any]]:
     repo = _get_mysql_repo()
     if repo:
-        return repo.get_inventory_items(query_type, category, sku, limit)
+        return repo.get_inventory_items(
+            query_type=query_type,
+            category=category,
+            sku=sku,
+            skus=skus,
+            vendor_id=vendor_id,
+            limit=limit,
+        )
 
     # Mock 数据也需要过滤
     items = list(_inventory_items)
@@ -84,6 +97,12 @@ def get_inventory_items(
             if item.get("DailySalesVelocity", 0) > 0
             and item["CurrentStock"] / item["DailySalesVelocity"] <= 7
         ]
+    if skus:
+        sku_set = {value.lower() for value in skus}
+        items = [item for item in items if str(item.get("SKU", "")).lower() in sku_set]
+    if vendor_id:
+        vendor_key = vendor_id.lower()
+        items = [item for item in items if str(item.get("VendorID", "")).lower() == vendor_key]
 
     if limit:
         items = items[:limit]

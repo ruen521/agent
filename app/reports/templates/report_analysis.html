@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <title>{{ title }}</title>
+</head>
+<body>
+  {% set external = analysis.external_report or {} %}
+  {% if audience == "external" %}
+  <h1>{{ title or external.report_title }}</h1>
+  <div class="meta">
+    导出时间：{{ generated_at }} ｜ 报告对象：{{ external.agent_label or analysis.agent_id }}
+  </div>
+
+  {% if external.model_markdown_blocks %}
+  <h2>模型详细建议</h2>
+  <div class="card">
+    {% for block in external.model_markdown_blocks %}
+      {% if block.get("type") == "heading" %}
+        <p class="block-title">{{ block.get("html") | safe }}</p>
+      {% elif block.get("type") == "paragraph" %}
+        <p>{{ block.get("html") | safe }}</p>
+      {% elif block.get("type") == "unordered_list" %}
+        <ul>
+          {% for item in block.get("items", []) %}
+          <li>{{ item.get("html") | safe }}</li>
+          {% endfor %}
+        </ul>
+      {% elif block.get("type") == "ordered_list" %}
+        <ol>
+          {% for item in block.get("items", []) %}
+          <li>{{ item.get("html") | safe }}</li>
+          {% endfor %}
+        </ol>
+      {% elif block.get("type") == "code_block" %}
+        <pre>{{ block.get("text") }}</pre>
+      {% elif block.get("type") == "table" %}
+        <table>
+          <thead>
+            <tr>
+              {% for column in block.get("header", []) %}
+              <th>{{ column | safe }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in block.get("rows", []) %}
+            <tr>
+              {% for col in row %}
+              <td>{{ col | safe }}</td>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% elif analysis.answer %}
+  <h2>模型详细建议</h2>
+  <div class="card">
+    <pre>{{ analysis.answer }}</pre>
+  </div>
+  {% endif %}
+
+  {% if external.summary_cards %}
+  <h2>关键指标</h2>
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>指标</th>
+          <th>数值</th>
+          <th>说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for card in external.summary_cards %}
+        <tr>
+          <td>{{ card.label }}</td>
+          <td>{{ card.value }}</td>
+          <td>{{ card.note or "-" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+
+  {% if external.action_plan %}
+  <h2>行动计划</h2>
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>优先级</th>
+          <th>动作</th>
+          <th>负责人</th>
+          <th>截止时间</th>
+          <th>预期结果</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for action in external.action_plan %}
+        <tr>
+          <td>{{ action.priority }}</td>
+          <td>{{ action.action }}</td>
+          <td>{{ action.owner }}</td>
+          <td>{{ action.due }}</td>
+          <td>{{ action.expected }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+
+  {% if external.detail_sections %}
+  <h2>业务明细</h2>
+  {% for section in external.detail_sections %}
+  <div class="card">
+    <p class="block-title">{{ section.title }}</p>
+    {% if section.rows %}
+    <table>
+      <thead>
+        <tr>
+          {% for column in section.columns %}
+          <th>{{ column }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in section.rows %}
+        <tr>
+          {% for col in row %}
+          <td>{{ col }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% if section.pdf_note %}
+    <p class="muted">{{ section.pdf_note }}</p>
+    {% endif %}
+    {% else %}
+    <p class="muted">{{ section.empty_text or "暂无数据" }}</p>
+    {% endif %}
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  <h2>数据说明</h2>
+  <div class="card">
+    <p>关键指标、业务明细与执行数据具体详见 Excel 导出文件。</p>
+  </div>
+  {% else %}
+  <h1>{{ title }}</h1>
+  <div class="meta">
+    导出时间：{{ generated_at }} ｜ 导出类型：{{ audience }} ｜ 智能体：{{ analysis.agent_id }}
+  </div>
+
+  <h2>问题与结论</h2>
+  <div class="card">
+    <p><strong>用户问题</strong></p>
+    <p>{{ analysis.question or "-" }}</p>
+    <p><strong>分析结论</strong></p>
+    <p>{{ analysis.answer or "-" }}</p>
+    <p class="muted">模型：{{ analysis.model or "-" }} ｜ 请求ID：{{ analysis.request_id or "-" }}</p>
+  </div>
+
+  {% if analysis.reasoning %}
+  <h2>推理摘要（内部版）</h2>
+  <div class="card">
+    <pre>{{ analysis.reasoning }}</pre>
+  </div>
+  {% endif %}
+
+  <h2>执行步骤</h2>
+  <div class="card">
+    {% set plan = analysis.plan_steps or [] %}
+    {% set past_steps = analysis.past_steps or [] %}
+    {% set remaining_plan = analysis.remaining_steps or [] %}
+    {% if plan or past_steps or remaining_plan %}
+      {% if plan %}
+      <p><strong>计划步骤</strong></p>
+      <ol>
+        {% for step in plan %}
+          <li>{{ step }}</li>
+        {% endfor %}
+      </ol>
+      {% endif %}
+      {% if past_steps %}
+      <p><strong>已执行步骤</strong></p>
+      <ol>
+        {% for step in past_steps %}
+          <li>{{ step }}</li>
+        {% endfor %}
+      </ol>
+      {% endif %}
+      {% if remaining_plan %}
+      <p><strong>待执行步骤</strong></p>
+      <ol>
+        {% for step in remaining_plan %}
+          <li>{{ step }}</li>
+        {% endfor %}
+      </ol>
+      {% endif %}
+    {% else %}
+      <p class="muted">本次分析无步骤信息</p>
+    {% endif %}
+  </div>
+
+  <h2>工具调用轨迹</h2>
+  <div class="card">
+    {% if analysis.tool_trace_rows %}
+    <table>
+      <thead>
+        <tr>
+          <th>工具</th>
+          <th>接口</th>
+          <th>状态</th>
+          <th>参数</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for trace in analysis.tool_trace_rows %}
+        <tr>
+          <td>{{ trace.tool }}</td>
+          <td>{{ trace.apiPath }}</td>
+          <td>{{ trace.httpStatusCode }}</td>
+          <td><pre>{{ trace.args_text }}</pre></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="muted">本次分析无工具轨迹</p>
+    {% endif %}
+  </div>
+
+  <h2>结构化结果</h2>
+  <div class="card">
+    <pre>{{ analysis.structured_output_text }}</pre>
+  </div>
+  {% endif %}
+</body>
+</html>

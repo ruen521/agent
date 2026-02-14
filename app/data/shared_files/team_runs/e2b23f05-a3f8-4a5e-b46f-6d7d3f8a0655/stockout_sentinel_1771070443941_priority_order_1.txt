@@ -1,0 +1,6 @@
+[
+  "Replenishment planning",
+  "Markdown clearance suggestions",
+  "Stockout risk detection",
+  "Exception anomaly detection"
+]

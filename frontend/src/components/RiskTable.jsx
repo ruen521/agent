@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
 
 export default function RiskTable({ risks }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -65,7 +65,7 @@ export default function RiskTable({ risks }) {
     <div className="panel risk-panel">
       <div className="panel-header">
         <div>
-          <h3>缺货风险雷达</h3>
+          <h3>风险洞察</h3>
           <span className="panel-sub">共 {risks.length} 个风险 SKU</span>
         </div>
         <div className="view-toggle">

@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 from datetime import date, datetime
+from typing import Any
 
-from sqlalchemy import Date, DateTime, Float, ForeignKey, Integer, JSON, String, Text
+from sqlalchemy import Date, DateTime, Float, ForeignKey, Integer, JSON, String, Text, UniqueConstraint
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -47,7 +48,10 @@ class VendorCallLog(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     vendor_id: Mapped[str] = mapped_column(String(32))
     contact_time: Mapped[datetime] = mapped_column(DateTime)
+    duration: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    outcome: Mapped[str | None] = mapped_column(String(64), nullable=True)
     notes: Mapped[str | None] = mapped_column(Text, nullable=True)
+    recording_url: Mapped[str | None] = mapped_column(String(1024), nullable=True)
 
 
 class ReplenishmentPlan(Base):
@@ -55,5 +59,62 @@ class ReplenishmentPlan(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     created_at: Mapped[datetime] = mapped_column(DateTime)
+    created_by: Mapped[str | None] = mapped_column(String(128), nullable=True)
     total_cost: Mapped[float] = mapped_column(Float)
     vendor_groups: Mapped[dict] = mapped_column(JSON)
+    status: Mapped[str | None] = mapped_column(String(64), nullable=True)
+
+
+class TeamRun(Base):
+    __tablename__ = "team_runs"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    run_id: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    session_id: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    objective: Mapped[str] = mapped_column(Text)
+    topology_version: Mapped[str] = mapped_column(String(64))
+    status: Mapped[str] = mapped_column(String(32))
+    orchestration_options: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
+    error_code: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    error_message: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime)
+    updated_at: Mapped[datetime] = mapped_column(DateTime)
+
+
+class TeamSharedState(Base):
+    __tablename__ = "team_shared_state"
+    __table_args__ = (UniqueConstraint("run_id", "state_key", name="uq_team_shared_state_run_key"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    run_id: Mapped[str] = mapped_column(String(64), index=True)
+    state_key: Mapped[str] = mapped_column(String(128))
+    state_value: Mapped[Any] = mapped_column(JSON)
+    version: Mapped[int] = mapped_column(Integer)
+    producer_member: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    updated_at: Mapped[datetime] = mapped_column(DateTime)
+
+
+class TeamMemberMemory(Base):
+    __tablename__ = "team_member_memory"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    run_id: Mapped[str] = mapped_column(String(64), index=True)
+    member_id: Mapped[str] = mapped_column(String(64), index=True)
+    scope: Mapped[str] = mapped_column(String(64), index=True)
+    content: Mapped[str] = mapped_column(Text)
+    memory_json: Mapped[Any] = mapped_column(JSON, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime)
+
+
+class TeamArtifact(Base):
+    __tablename__ = "team_artifacts"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    run_id: Mapped[str] = mapped_column(String(64), index=True)
+    member_id: Mapped[str] = mapped_column(String(64), index=True)
+    kind: Mapped[str] = mapped_column(String(64))
+    file_name: Mapped[str] = mapped_column(String(255))
+    file_path: Mapped[str] = mapped_column(String(1024))
+    content_type: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    artifact_meta: Mapped[Any] = mapped_column(JSON, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime)
